@@ -666,6 +666,13 @@
             leg.innerHTML = '<span><i style="background:' + meta().color + ';"></i> ' + meta().name + '</span>';
         }
     }
+    function tint(hex, f){
+        var n = String(hex).replace('#','');
+        var r = parseInt(n.substr(0,2),16), g = parseInt(n.substr(2,2),16), b = parseInt(n.substr(4,2),16);
+        r = Math.round(r + (255-r)*f); g = Math.round(g + (255-g)*f); b = Math.round(b + (255-b)*f);
+        return '#' + [r,g,b].map(function(x){ return ('0'+x.toString(16)).slice(-2); }).join('');
+    }
+
     function colorForUnit(u){
         for (var b in DATA){ if (b !== 'todas' && DATA[b].unidades.indexOf(u) >= 0) return DATA[b].meta.color; }
         return '#0c2a4d';
@@ -861,8 +868,8 @@
             charts.acionProm = new Chart(document.getElementById('chartAcionProm'), {
                 type:'bar',
                 data:{ labels: keys.map(function(b){ return DATA[b].meta.name; }), datasets:[
-                    { label:'Acionados', data: keys.map(function(b){ return DATA[b].totais.acionados; }), backgroundColor:'#a9c2d8', borderRadius:6 },
-                    { label:'Promessas', data: keys.map(function(b){ return DATA[b].totais.promessas; }), backgroundColor:'#0c2a4d', borderRadius:6 }
+                    { label:'Acionados', data: keys.map(function(b){ return DATA[b].totais.acionados; }), backgroundColor: keys.map(function(b){ return DATA[b].meta.color; }), borderRadius:6 },
+                    { label:'Promessas', data: keys.map(function(b){ return DATA[b].totais.promessas; }), backgroundColor: keys.map(function(b){ return tint(DATA[b].meta.color, 0.55); }), borderRadius:6 }
                 ]},
                 options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top', labels:{ boxWidth:12, usePointStyle:true } } }, scales:{ y:{ grid:{ color:'#eef2f6' } }, x:{ grid:{ display:false } } } }
             });
