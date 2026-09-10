@@ -667,11 +667,11 @@
         }
     }
     function colorForUnit(u){
-        for (var b in DATA){ if (DATA[b].unidades.indexOf(u) >= 0) return DATA[b].meta.color; }
+        for (var b in DATA){ if (b !== 'todas' && DATA[b].unidades.indexOf(u) >= 0) return DATA[b].meta.color; }
         return '#0c2a4d';
     }
     function dMetaForUnit(u){
-        for (var b in DATA){ if (DATA[b].unidades.indexOf(u) >= 0) return DATA[b].meta.name; }
+        for (var b in DATA){ if (b !== 'todas' && DATA[b].unidades.indexOf(u) >= 0) return DATA[b].meta.name; }
         return '';
     }
 
