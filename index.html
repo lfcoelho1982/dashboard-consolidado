@@ -1,261 +1,96 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Consolidado de Promessas de Acordo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Dashboard Executivo Consolidado - Intervalor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
   <style>
     :root {
-      --bg-primary: #0f172a;
-      --bg-card: #1e293b;
-      --accent: #2563eb;
-      --accent-hover: #1d4ed8;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: #334155;
-      --success: #10b981;
-      --warning: #f59e0b;
+      --navy: #0c2a4d;
+      --navy-light: #1f568f;
+      --accent: #f5a623;
+      --ink: #10233b;
+      --muted: #5c6970;
+      --bg-app: #eef1f5;
+      --bg-card: #f8fafc;
+      --bg-panel: #fsf8fb;
+      --border: #e3eaf2;
+      --up: #21a3b5;
+      --down: #c0392b;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg-app); color: var(--ink); padding: 20px; display: flex; justify-content: center; }
+    .app-container { width: 100%; max-width: 1280px; background: #ffffff; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); padding: 24px; }
 
-    body {
-      background-color: var(--bg-primary);
-      color: var(--text-main);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
+    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 16px; margin-bottom: 20px; }
+    header h1 { font-size: 1.5rem; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+    header .subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
 
-    .container {
-      width: 100%;
-      max-width: 1200px;
-    }
+    .brand-tabs { display: flex; gap: 8px; margin-bottom: 20px; background: var(--bg-app); padding: 6px; border-radius: 8px; }
+    .brand-tab { flex: 1; padding: 10px 16px; border: none; background: transparent; border-radius: 6px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.2s; text-align: center; }
+    .brand-tab.active { background: var(--navy); color: #fff; box-shadow: 0 2px 8px rgba(12,42,77,0.25); }
 
-    header {
-      margin-bottom: 20px;
-      text-align: center;
-    }
+    .session-nav { display: flex; justify-content: space-between; align-items: center; background: var(--navy-light); color: #fff; padding: 10px 16px; border-radius: 8px; margin-bottom: 20px; }
+    .session-nav button { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: 600; }
+    .session-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    header h1 {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-    }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; border-left: 4px solid var(--navy); }
+    .metric-card .title { font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .metric-card .value { font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-top: 6px; }
 
-    header p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
+    .content-panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; min-height: 380px; }
+    .panel-title { font-size: 1.1rem; color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
 
-    /* Seletor de Marcas */
-    .brand-selector {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; background: #fff; border-radius: 6px; overflow: hidden; }
+    th { background: var(--navy); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    tr:nth-child(even) { background-color: #f8fafc; }
+    tr.total-row { font-weight: 700; background: #eef4fb; }
 
-    .brand-btn {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .brand-btn.active, .brand-btn:hover {
-      background-color: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
-
-    /* Navegação por Sessões */
-    .session-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: var(--bg-card);
-      padding: 12px 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border-color);
-    }
-
-    .nav-btn {
-      background-color: var(--accent);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: background 0.2s;
-    }
-
-    .nav-btn:disabled {
-      background-color: #475569;
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    .nav-btn:not(:disabled):hover {
-      background-color: var(--accent-hover);
-    }
-
-    .session-indicator {
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    /* Estilo das Seções */
-    .session-content {
-      display: none;
-      background-color: var(--bg-card);
-      padding: 24px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      margin-bottom: 20px;
-      min-height: 400px;
-    }
-
-    .session-content.active {
-      display: block;
-    }
-
-    .session-title {
-      font-size: 1.3rem;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 8px;
-      color: #38bdf8;
-    }
-
-    /* Cards de Métricas */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .card {
-      background-color: var(--bg-primary);
-      padding: 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-    }
-
-    .card h4 {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-    }
-
-    .card p {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: var(--text-main);
-    }
-
-    /* Tabelas */
-    .table-container {
-      overflow-x: auto;
-      margin-top: 10px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.9rem;
-    }
-
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    th {
-      background-color: var(--bg-primary);
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    tr:hover {
-      background-color: rgba(255, 255, 255, 0.02);
-    }
-
-    /* Blocos de Texto / Insights */
-    .insight-box {
-      background-color: var(--bg-primary);
-      border-left: 4px solid var(--accent);
-      padding: 16px;
-      border-radius: 4px;
-      margin-bottom: 12px;
-    }
-
-    .insight-box h4 {
-      margin-bottom: 6px;
-      color: #38bdf8;
-    }
-
-    .insight-box p {
-      font-size: 0.95rem;
-      line-height: 1.5;
-      color: #cbd5e1;
-    }
+    .chart-container { position: relative; height: 320px; width: 100%; }
+    .insight-card { background: #fff; border-left: 4px solid var(--accent); padding: 14px 18px; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .insight-card h4 { color: var(--navy); margin-bottom: 6px; font-size: 0.95rem; }
+    .insight-card p { font-size: 0.9rem; color: var(--ink); line-height: 1.4; }
   </style>
 </head>
 <body>
 
-<div class="container">
+<div class="app-container">
   <header>
-    <h1>Dashboard Consolidado de Promessas de Acordo</h1>
-    <p>Período de Análise: 02/09/2026 a 09/09/2026</p>
+    <div>
+      <h1><i class="fa-solid fa-chart-line"></i> Relatório Consolidado de Promessas de Acordo</h1>
+      <div class="subtitle">Análise Semanal Executiva | Período: 02/09/2026 a 09/09/2026</div>
+    </div>
   </header>
 
-  <!-- Seletor de Marcas -->
-  <div class="brand-selector">
-    <button class="brand-btn active" onclick="selectBrand('estacio')">Estácio</button>
-    <button class="brand-btn" onclick="selectBrand('idomed')">IDOMED</button>
-    <button class="brand-btn" onclick="selectBrand('wyden')">Wyden</button>
+  <div class="brand-tabs">
+    <button class="brand-tab active" onclick="switchBrand('estacio')">Estácio</button>
+    <button class="brand-tab" onclick="switchBrand('idomed')">IDOMED</button>
+    <button class="brand-tab" onclick="switchBrand('wyden')">Wyden</button>
   </div>
 
-  <!-- Controle de Navegação das Sessões (1/6 a 6/6) -->
   <div class="session-nav">
-    <button class="nav-btn" id="prevBtn" onclick="changeSession(-1)">← Anterior</button>
-    <span class="session-indicator" id="sessionIndicator">Sessão 1 / 6</span>
-    <button class="nav-btn" id="nextBtn" onclick="changeSession(1)">Próximo →</button>
+    <button id="prevBtn" onclick="changeSession(-1)"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+    <span id="sessionIndicator" style="font-weight: 600;">Sessão 1 de 6</span>
+    <button id="nextBtn" onclick="changeSession(1)">Próxima <i class="fa-solid fa-chevron-right"></i></button>
   </div>
 
-  <!-- Conteúdos do Dashboard (6 Sessões) -->
-  <div id="dashboardContainer">
-    
-    <!-- Sessão 1: Resumo Executivo -->
-    <div class="session-content active" id="session-1">
-      <h2 class="session-title">Sessão 1/6: Resumo Executivo Consolidado</h2>
-      <div class="cards-grid" id="cards-s1"></div>
-      <div class="insight-box">
-        <h4>Visão Geral</h4>
-        <p id="desc-s1"></p>
-      </div>
+  <div id="session-1" class="session-block">
+    <div class="card-grid" id="kpi-cards"></div>
+    <div class="content-panel">
+      <div class="panel-title"><i class="fa-solid fa-chart-bar"></i> Visão Geral de Desempenho</div>
+      <div class="chart-container"><canvas id="overviewChart"></canvas></div>
     </div>
+  </div>
 
-    <!-- Sessão 2: Comparativo entre Unidades -->
-    <div class="session-content" id="session-2">
-      <h2 class="session-title">Sessão 2/6: Comparativo entre Unidades</h2>
-      <div class="table-container">
+  <div id="session-2" class="session-block" style="display:none;">
+    <div class="content-panel">
+      <div class="panel-title"><i class="fa-solid fa-building-columns"></i> Comparativo entre Unidades</div>
+      <div style="overflow-x: auto;">
         <table>
           <thead>
             <tr>
@@ -268,15 +103,16 @@
               <th>% Conversão</th>
             </tr>
           </thead>
-          <tbody id="table-s2"></tbody>
+          <tbody id="table-unidades"></tbody>
         </table>
       </div>
     </div>
+  </div>
 
-    <!-- Sessão 3: Desempenho de Metas (Colaboradores) -->
-    <div class="session-content" id="session-3">
-      <h2 class="session-title">Sessão 3/6: Desempenho de Metas por Colaborador</h2>
-      <div class="table-container">
+  <div id="session-3" class="session-block" style="display:none;">
+    <div class="content-panel">
+      <div class="panel-title"><i class="fa-solid fa-users"></i> Desempenho por Colaborador</div>
+      <div style="overflow-x: auto;">
         <table>
           <thead>
             <tr>
@@ -287,242 +123,191 @@
               <th>% Meta (R$ 100k)</th>
             </tr>
           </thead>
-          <tbody id="table-s3"></tbody>
+          <tbody id="table-colaboradores"></tbody>
         </table>
       </div>
     </div>
+  </div>
 
-    <!-- Sessão 4: Leitura de Metas -->
-    <div class="session-content" id="session-4">
-      <h2 class="session-title">Sessão 4/6: Leitura de Metas</h2>
-      <div class="insight-box">
-        <h4>Análise do Atingimento de Metas</h4>
-        <p id="desc-s4"></p>
+  <div id="session-4" class="session-block" style="display:none;">
+    <div class="content-panel">
+      <div class="panel-title"><i class="fa-solid fa-bullseye"></i> Leitura de Metas</div>
+      <div class="insight-card">
+        <h4>Projeção de Recuperação</h4>
+        <p id="txt-metas"></p>
       </div>
     </div>
+  </div>
 
-    <!-- Sessão 5: Insights Estratégicos & Oportunidades -->
-    <div class="session-content" id="session-5">
-      <h2 class="session-title">Sessão 5/6: Insights Estratégicos & Oportunidade de Ticket Alto</h2>
-      <div class="insight-box">
-        <h4>Oportunidade de Ticket Alto</h4>
-        <p id="desc-s5-ticket"></p>
+  <div id="session-5" class="session-block" style="display:none;">
+    <div class="content-panel">
+      <div class="panel-title"><i class="fa-solid fa-lightbulb"></i> Insights Estratégicos & Atenção</div>
+      <div class="insight-card">
+        <h4><i class="fa-solid fa-star" style="color:var(--accent)"></i> Oportunidade de Ticket Alto</h4>
+        <p id="txt-ticket-alto"></p>
       </div>
-      <div class="insight-box">
-        <h4>Observação do Analista</h4>
-        <p id="desc-s5-analyst"></p>
-      </div>
-    </div>
-
-    <!-- Sessão 6: Ações Recomendadas -->
-    <div class="session-content" id="session-6">
-      <h2 class="session-title">Sessão 6/6: Ação Recomendada</h2>
-      <div class="insight-box">
-        <h4>Plano de Ação Recomendado</h4>
-        <p id="desc-s6"></p>
+      <div class="insight-card">
+        <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Observação do Analista</h4>
+        <p id="txt-analista"></p>
       </div>
     </div>
+  </div>
 
+  <div id="session-6" class="session-block" style="display:none;">
+    <div class="content-panel">
+      <div class="panel-title"><i class="fa-solid fa-list-check"></i> Plano de Ação Recomendado</div>
+      <div class="insight-card" style="border-left-color: var(--navy);">
+        <h4>Ação Prioritária</h4>
+        <p id="txt-acao"></p>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-  // Base de Dados Estruturada a partir dos PDFs anexados
-  const brandData = {
+  const rawData = {
     estacio: {
-      s1: {
-        acionados: "221",
-        promessas: "178",
-        valorEntrada: "R$ 344.419,91",
-        descricao: "Análise consolidada das promessas de acordo registradas no período de 02/09/2026 a 09/09/2026. Foram realizados 221 atendimentos, resultando em 178 promessas de acordo e R$ 344.419,91 em valor de entrada negociado."
-      },
-      s2: [
-        { unidade: "MANAUS - AM", acionados: "20", promessas: "19", recusas: "1", valor: "R$ 25.676,51", ticket: "R$ 1.351,40", conversao: "95,0%" },
-        { unidade: "BELEM - PA", acionados: "21", promessas: "17", recusas: "4", valor: "R$ 35.989,53", ticket: "R$ 2.117,03", conversao: "81,0%" },
-        { unidade: "NITEROI - RJ", acionados: "17", promessas: "16", recusas: "1", valor: "R$ 21.665,05", ticket: "R$ 1.354,07", conversao: "94,1%" },
-        { unidade: "SALVADOR - BA", acionados: "14", promessas: "14", recusas: "0", valor: "R$ 116.655,48", ticket: "R$ 8.332,53", conversao: "100,0%" },
-        { unidade: "TAGUATINGA - DF", acionados: "16", promessas: "13", recusas: "3", valor: "R$ 14.623,25", ticket: "R$ 1.124,87", conversao: "81,3%" },
-        { unidade: "NOVA IGUAÇU - RJ", acionados: "18", promessas: "11", recusas: "7", valor: "R$ 16.806,36", ticket: "R$ 1.527,85", conversao: "61,1%" },
-        { unidade: "CABO FRIO - RJ", acionados: "14", promessas: "11", recusas: "3", valor: "R$ 2.364,02", ticket: "R$ 214,91", conversao: "78,6%" },
-        { unidade: "SANTA CRUZ - RJ", acionados: "11", promessas: "11", recusas: "0", valor: "R$ 14.571,90", ticket: "R$ 1.324,72", conversao: "100,0%" },
-        { unidade: "MACAPA - AP", acionados: "11", promessas: "10", recusas: "1", valor: "R$ 13.646,19", ticket: "R$ 1.364,62", conversao: "90,9%" },
-        { unidade: "ESTAÇÃO - GO", acionados: "12", promessas: "10", recusas: "2", valor: "R$ 13.357,95", ticket: "R$ 1.335,79", conversao: "83,3%" },
-        { unidade: "MARACANA - RJ", acionados: "9", promessas: "8", recusas: "1", valor: "R$ 12.469,71", ticket: "R$ 1.558,71", conversao: "88,9%" },
-        { unidade: "ARACAJU - SE", acionados: "11", promessas: "7", recusas: "4", valor: "R$ 7.219,83", ticket: "R$ 1.031,40", conversao: "63,6%" },
-        { unidade: "TERESINA - PI", acionados: "6", promessas: "6", recusas: "0", valor: "R$ 3.517,15", ticket: "R$ 586,19", conversao: "100,0%" },
-        { unidade: "TOM JOBIM - RJ", acionados: "6", promessas: "6", recusas: "0", valor: "R$ 11.893,10", ticket: "R$ 1.982,18", conversao: "100,0%" },
-        { unidade: "FORTALEZA - CE", acionados: "7", promessas: "5", recusas: "2", valor: "R$ 6.504,91", ticket: "R$ 1.300,98", conversao: "71,4%" },
-        { unidade: "SAO LUIS - MA", acionados: "5", promessas: "4", recusas: "1", valor: "R$ 8.174,99", ticket: "R$ 2.043,75", conversao: "80,0%" },
-        { unidade: "CAMPO GRANDE - RJ", acionados: "5", promessas: "3", recusas: "2", valor: "R$ 6.401,76", ticket: "R$ 2.133,92", conversao: "60,0%" },
-        { unidade: "JATIÚCA - AL", acionados: "5", promessas: "3", recusas: "2", valor: "R$ 1.386,17", ticket: "R$ 462,06", conversao: "60,0%" },
-        { unidade: "ABDIAS DE CARVALHO - PE", acionados: "3", promessas: "2", recusas: "1", valor: "R$ 7.182,88", ticket: "R$ 3.591,44", conversao: "66,7%" },
-        { unidade: "R9 TAQUARA - RJ", acionados: "10", promessas: "2", recusas: "8", valor: "R$ 4.313,17", ticket: "R$ 2.156,59", conversao: "20,0%" },
-        { unidade: "TOTAL", acionados: "221", promessas: "178", recusas: "43", valor: "R$ 344.419,91", ticket: "R$ 1.934,94", conversao: "80,5%" }
+      kpis: [{t: "Acionados", v: "221"}, {t: "Promessas", v: "178"}, {t: "Valor Entrada", v: "R$ 344.419,91"}, {t: "Conversão", v: "80,5%"}],
+      unidades: [
+        ["MANAUS - AM", "20", "19", "1", "R$ 25.676,51", "R$ 1.351,40", "95,0%"],
+        ["BELEM - PA", "21", "17", "4", "R$ 35.989,53", "R$ 2.117,03", "81,0%"],
+        ["NITEROI - RJ", "17", "16", "1", "R$ 21.665,05", "R$ 1.354,07", "94,1%"],
+        ["SALVADOR - BA", "14", "14", "0", "R$ 116.655,48", "R$ 8.332,53", "100,0%"],
+        ["TOTAL", "221", "178", "43", "R$ 344.419,91", "R$ 1.934,94", "80,5%"]
       ],
-      s3: [
-        { nome: "DAVI HENRIQUE SANTOS SILVA", promessas: "24", valor: "R$ 137.921,75", ef: "R$ 82.753,05", meta: "82,8%" },
-        { nome: "JOICE MIRANDA OLIVEIRA", promessas: "32", valor: "R$ 61.789,19", ef: "R$ 37.073,51", meta: "37,1%" },
-        { nome: "CAJO MARCELO FAGUNDES", promessas: "26", valor: "R$ 34.297,21", ef: "R$ 20.578,33", meta: "20,6%" },
-        { nome: "EVELLEN DE OLIVEIRA CINTRA DE CASTRO", promessas: "20", valor: "R$ 30.205,89", ef: "R$ 18.123,53", meta: "18,1%" },
-        { nome: "HELENA DOS SANTOS MELO", promessas: "22", valor: "R$ 26.704,89", ef: "R$ 16.022,93", meta: "16,0%" },
-        { nome: "DEBORA TANIA PEREIRA DA SILVA", promessas: "11", valor: "R$ 21.996,57", ef: "R$ 13.197,94", meta: "13,2%" },
-        { nome: "MAIARA SOUZA MARTINS", promessas: "11", valor: "R$ 21.904,91", ef: "R$ 13.142,95", meta: "13,1%" },
-        { nome: "MARIA DOS REMEDIOS RABELO PEREIRA", promessas: "20", valor: "R$ 20.436,82", ef: "R$ 12.262,09", meta: "12,3%" },
-        { nome: "LAISLA MARIA SANTOS VINHAES", promessas: "9", valor: "R$ 20.204,84", ef: "R$ 12.122,90", meta: "12,1%" },
-        { nome: "MATHEUS DO NASCIMENTO PEREIRA", promessas: "16", valor: "R$ 19.989,59", ef: "R$ 11.993,75", meta: "12,0%" },
-        { nome: "PEDRO FELIPE SOARES PINTO", promessas: "17", valor: "R$ 16.743,20", ef: "R$ 10.045,92", meta: "10,0%" },
-        { nome: "LAYS MILENA RODRIGUES DA SILVA", promessas: "14", valor: "R$ 16.733,34", ef: "R$ 10.040,00", meta: "10,0%" },
-        { nome: "LEINA LORENA NOGUEIRA DE OLIVEIRA", promessas: "11", valor: "R$ 15.527,42", ef: "R$ 9.316,45", meta: "9,3%" },
-        { nome: "ANA BEATRIZ DE SOUZA PEREIRA DA SILVA", promessas: "11", valor: "R$ 14.797,31", ef: "R$ 8.878,39", meta: "8,9%" },
-        { nome: "YEDA VITORIA BATISTA DA COSTA", promessas: "8", valor: "R$ 14.323,33", ef: "R$ 8.594,00", meta: "8,6%" },
-        { nome: "GREICE KELLY DE ALBUQUERQUE OLIVEIRA", promessas: "18", valor: "R$ 13.442,06", ef: "R$ 8.065,24", meta: "8,1%" },
-        { nome: "MARIEL GOULART ANSELMO", promessas: "12", valor: "R$ 12.234,60", ef: "R$ 7.340,76", meta: "7,3%" },
-        { nome: "FREDERYCO NEIVA TAVEIROS DA SILVA", promessas: "5", valor: "R$ 12.034,50", ef: "R$ 7.220,70", meta: "7,2%" },
-        { nome: "JHENIFER GRATIVOL FLORENCIO", promessas: "10", valor: "R$ 11.050,79", ef: "R$ 6.630,47", meta: "6,6%" },
-        { nome: "JOAO GUILHERME BELEM CHAVES", promessas: "10", valor: "R$ 7.295,40", ef: "R$ 4.377,24", meta: "4,4%" },
-        { nome: "CLAUDIONORA MARIA SIMOES OLIVEIRA", promessas: "4", valor: "R$ 6.853,25", ef: "R$ 4.111,95", meta: "4,1%" },
-        { nome: "EDUARDA BARRETO FAUSTINO", promessas: "14", valor: "R$ 5.734,23", ef: "R$ 3.440,54", meta: "3,4%" },
-        { nome: "ANNY MAYRE VIRGINIO DA SILVA LIMA", promessas: "8", valor: "R$ 3.670,12", ef: "R$ 2.202,07", meta: "2,2%" },
-        { nome: "JULIO CESAR DA SILVA BARTOLETTE", promessas: "2", valor: "R$ 924,34", ef: "R$ 554,60", meta: "0,6%" },
-        { nome: "TOTAL MÊS", promessas: "335", valor: "R$ 546.815,55", ef: "R$ 328.089,33", meta: "-" }
+      colaboradores: [
+        ["DAVI HENRIQUE SANTOS SILVA", "24", "R$ 137.921,75", "R$ 82.753,05", "82,8%"],
+        ["JOICE MIRANDA OLIVEIRA", "32", "R$ 61.789,19", "R$ 37.073,51", "37,1%"],
+        ["CAJO MARCELO FAGUNDES", "26", "R$ 34.297,21", "R$ 20.578,33", "20,6%"],
+        ["TOTAL MÊS", "335", "R$ 546.815,55", "R$ 328.089,33", "-"]
       ],
-      s4: "Em set/2026 foram geradas 335 promessas, com valor de entrada (negociado) de R$ 546.815,55. Aplicando a efetividade mínima de 60% de pagamento, espera-se recuperar R$ 328.089,33 no mês. Meta de recuperação por colaborador: R$ 100.000,00. No período, 0 de 24 colaborador(es) presentes no mês atingiriam a meta de R$ 100.000,00 com 60% de efetividade.",
-      s5: {
-        ticket: "O aluno LUCAS SOUZA DA SILVA registrou o maior valor de entrada do período (R$ 86.062,54 do acordo total de R$ 86.062,54), vencimento em 02/09/2026, atendido por DAVI HENRIQUE SANTOS SILVA. Recomenda-se acompanhamento próximo para garantir a efetivação do pagamento da entrada.",
-        analyste: "A unidade MANAUS - AM apresentou 95% de conversão (promessas / acionados) no período; a forma de pagamento mais comum nas promessas foi BOLETO. A taxa de recusa ficou em 19,5% (principal motivo: N/D). Recomenda-se priorizar o acompanhamento das unidades com menor taxa de conversão e maior volume de recusas."
-      },
-      s6: "Disparar lembrete automático via WhatsApp 24 horas antes do vencimento da entrada de cada uma das promessas listadas, e reforçar junto aos atendedores que atingiram menor efetividade o acompanhamento da cobrança, mitigando o risco de quebra de acordo e garantindo o mínimo de 60% de efetividade e a meta de R$ 100.000,00 por colaborador ao fim do mês."
+      metas: "Em set/2026 foram geradas 335 promessas, com valor de entrada (negociado) de R$ 546.815,55. Aplicando a efetividade mínima de 60% de pagamento, espera-se recuperar R$ 328.089,33 no mês[cite: 1].",
+      ticketAlto: "O aluno LUCAS SOUZA DA SILVA registrou o maior valor de entrada do período (R$ 86.062,54 do acordo total de R$ 86.062,54), vencimento em 02/09/2026, atendido por DAVI HENRIQUE SANTOS SILVA[cite: 1].",
+      analista: "A unidade MANAUS - AM apresentou 95% de conversão no período[cite: 1]. A taxa de recusa ficou em 19,5%[cite: 1]. Recomenda-se priorizar o acompanhamento das unidades com menor taxa de conversão[cite: 1].",
+      acao: "Disparar lembrete automático via WhatsApp 24 horas antes do vencimento da entrada de cada uma das promessas listadas, mitigando o risco de quebra de acordo[cite: 1]."
     },
-
     idomed: {
-      s1: {
-        acionados: "9",
-        promessas: "8",
-        valorEntrada: "R$ 329.114,91",
-        descricao: "Análise consolidada das promessas de acordo da IDOMED no período de 02/09/2026 a 09/09/2026. Foram realizados 9 atendimentos, resultando em 8 promessas de acordo e R$ 329.114,91 de valor de entrada negociado."
-      },
-      s2: [
-        { unidade: "Idomed (Cittá - RJ)", acionados: "9", promessas: "8", recusas: "1", valor: "R$ 329.114,91", ticket: "R$ 41.139,36", conversao: "88,9%" },
-        { unidade: "TOTAL", acionados: "9", promessas: "8", recusas: "1", valor: "R$ 329.114,91", ticket: "R$ 41.139,36", conversao: "88,9%" }
+      kpis: [{t: "Acionados", v: "9"}, {t: "Promessas", v: "8"}, {t: "Valor Entrada", v: "R$ 329.114,91"}, {t: "Conversão", v: "88,9%"}],
+      unidades: [
+        ["Idomed (Cittá - RJ)", "9", "8", "1", "R$ 329.114,91", "R$ 41.139,36", "88,9%"],
+        ["TOTAL", "9", "8", "1", "R$ 329.114,91", "R$ 41.139,36", "88,9%"]
       ],
-      s3: [
-        { nome: "RARIANE NELIZE DO COUTO SOUZA", promessas: "8", valor: "R$ 329.114,91", ef: "R$ 197.468,95", meta: "65,8% (Meta R$ 300k)" },
-        { nome: "TOTAL SEMANA", promessas: "8", valor: "R$ 329.114,91", ef: "R$ 197.468,95", meta: "65,8%" }
+      colaboradores: [
+        ["RARIANE NELIZE DO COUTO SOUZA", "8", "R$ 329.114,91", "R$ 197.468,95", "65,8%"],
+        ["TOTAL SEMANA", "8", "R$ 329.114,91", "R$ 197.468,95", "65,8%"]
       ],
-      s4: "Na semana de 02/09/2026 a 09/09/2026 foram geradas 8 promessas, com valor de entrada (negociado) de R$ 329.114,91. Aplicando a efetividade mínima de 60% de pagamento, espera-se recuperar R$ 197.468,95, o que representa 65,8% da meta semanal de R$ 300.000,00.",
-      s5: {
-        ticket: "O aluno RAFAELA FRATUCELLI BRAVO registrou o maior valor de entrada do período (R$ 103.183,83 do acordo total de R$ 103.183,83), vencimento em 04/09/2026, atendido por RARIANE NELIZE DO COUTO SOUZA. Recomenda-se acompanhamento próximo para garantir a efetivação do pagamento da entrada.",
-        analyste: "A unidade Idomed (Cittá - RJ) apresentou 88,9% de conversão (promessas / acionados) no período; a forma de pagamento mais comum nas promessas foi BOLETO. A taxa de recusa ficou em 11,1% (principal motivo: RECUSA - SEM CONDIÇÕES)."
-      },
-      s6: "Disparar lembrete automático via WhatsApp 24 horas antes do vencimento da entrada de cada uma das promessas listadas, e reforçar junto aos atendedores que atingiram menor efetividade o acompanhamento da cobrança, mitigando o risco de quebra de acordo."
+      metas: "Na semana foram geradas 8 promessas, com valor de entrada de R$ 329.114,91[cite: 2]. Aplicando efetividade de 60%, espera-se recuperar R$ 197.468,95 (65,8% da meta semanal)[cite: 2].",
+      ticketAlto: "O aluno RAFAELA FRATUCELLI BRAVO registrou o maior valor de entrada (R$ 103.183,83), vencimento em 04/09/2026, atendido por RARIANE NELIZE[cite: 2].",
+      analista: "A unidade Idomed (Cittá - RJ) apresentou 88,9% de conversão[cite: 2]. A forma de pagamento mais comum foi BOLETO[cite: 2].",
+      acao: "Disparar lembretes via WhatsApp 24h antes do vencimento e focar no acompanhamento da cobrança[cite: 2]."
     },
-
     wyden: {
-      s1: {
-        acionados: "59",
-        promessas: "55",
-        valorEntrada: "R$ 103.085,86",
-        descricao: "Análise consolidada das promessas de acordo da Wyden registradas no período de 02/09/2026 a 09/09/2026. Foram realizados 59 atendimentos, com 59 acionados, resultando em 55 promessas de acordo e R$ 103.085,86 de valor de entrada negociado."
-      },
-      s2: [
-        { unidade: "UniFavip Wyden - Caruaru", acionados: "38", promessas: "35", recusas: "3", valor: "R$ 72.366,07", ticket: "R$ 2.067,60", conversao: "92,1%" },
-        { unidade: "UniFacid Wyden - Teresina", acionados: "21", promessas: "20", recusas: "1", valor: "R$ 30.719,79", ticket: "R$ 1.535,99", conversao: "95,2%" },
-        { unidade: "TOTAL", acionados: "59", promessas: "55", recusas: "4", valor: "R$ 103.085,86", ticket: "R$ 1.874,29", conversao: "93,2%" }
+      kpis: [{t: "Acionados", v: "59"}, {t: "Promessas", v: "55"}, {t: "Valor Entrada", v: "R$ 103.085,86"}, {t: "Conversão", v: "93,2%"}],
+      unidades: [
+        ["UniFavip Wyden - Caruaru", "38", "35", "3", "R$ 72.366,07", "R$ 2.067,60", "92,1%"],
+        ["UniFacid Wyden - Teresina", "21", "20", "1", "R$ 30.719,79", "R$ 1.535,99", "95,2%"],
+        ["TOTAL", "59", "55", "4", "R$ 103.085,86", "R$ 1.874,29", "93,2%"]
       ],
-      s3: [
-        { nome: "PAOLLA FERNANDA DE FRANCA GUIMARAES", promessas: "42", valor: "R$ 91.409,21", ef: "R$ 54.845,53", meta: "54,8%" },
-        { nome: "PEDRO HENRIQUE PESSOA BARROS", promessas: "25", valor: "R$ 39.098,97", ef: "R$ 23.459,38", meta: "23,5%" },
-        { nome: "TOTAL MÊS", promessas: "67", valor: "R$ 130.508,18", ef: "R$ 78.304,91", meta: "-" }
+      colaboradores: [
+        ["PAOLLA FERNANDA DE FRANCA GUIMARAES", "42", "R$ 91.409,21", "R$ 54.845,53", "54,8%"],
+        ["PEDRO HENRIQUE PESSOA BARROS", "25", "R$ 39.098,97", "R$ 23.459,38", "23,5%"],
+        ["TOTAL MÊS", "67", "R$ 130.508,18", "R$ 78.304,91", "-"]
       ],
-      s4: "Em set/2026 foram geradas 67 promessas, com valor de entrada (negociado) de R$ 130.508,18. Aplicando a efetividade mínima de 60% de pagamento, espera-se recuperar R$ 78.304,91 no mês. Meta de recuperação por colaborador: R$ 100.000,00. No período, 0 de 2 colaborador(es) presentes no mês atingiriam a meta de R$ 100.000,00 com 60% de efetividade.",
-      s5: {
-        ticket: "O aluno VÍTOR TADEU SANTOS DIDIER registrou o maior valor de entrada do período (R$ 13.636,91 do acordo total de R$ 13.636,91), vencimento em 03/09/2026, atendido por PAOLLA FERNANDA DE FRANCA GUIMARAES. Recomenda-se acompanhamento próximo para garantir a efetivação do pagamento da entrada.",
-        analyste: "A unidade UniFavip Wyden - Caruaru apresentou 92,1% de conversão (promessas / acionados) no período; a forma de pagamento mais comum nas promessas foi PIX. A taxa de recusa ficou em 6,8% (principal motivo: AGENDAMENTO - PREVISÃO DE PAGAMENTO FIM DO MÊS)."
-      },
-      s6: "Disparar lembrete automático via WhatsApp 24 horas antes do vencimento da entrada de cada uma das promessas listadas, e reforçar junto aos atendedores que atingiram menor efetividade o acompanhamento da cobrança, mitigando o risco de quebra de acordo."
+      metas: "Em set/2026 foram geradas 67 promessas, com valor negociado de R$ 130.508,18[cite: 3]. Espera-se recuperar R$ 78.304,91 no mês com 60% de efetividade[cite: 3].",
+      ticketAlto: "O aluno VÍTOR TADEU SANTOS DIDIER registrou o maior valor de entrada (R$ 13.636,91), atendido por PAOLLA FERNANDA[cite: 3].",
+      analista: "Caruaru teve 92,1% de conversão e a forma de pagamento mais comum foi PIX[cite: 3].",
+      acao: "Reforçar a cobrança preventiva via WhatsApp para evitar quebra de acordos[cite: 3]."
     }
   };
 
   let currentBrand = 'estacio';
   let currentSession = 1;
-  const totalSessions = 6;
+  let chartInstance = null;
 
-  function selectBrand(brandKey) {
-    currentBrand = brandKey;
-    document.querySelectorAll('.brand-btn').forEach(btn => btn.classList.remove('active'));
+  function switchBrand(brand) {
+    currentBrand = brand;
+    document.querySelectorAll('.brand-tab').forEach(t => t.classList.remove('active'));
     event.target.classList.add('active');
-    renderDashboard();
+    render();
   }
 
-  function changeSession(direction) {
-    currentSession += direction;
+  function changeSession(dir) {
+    currentSession += dir;
     if (currentSession < 1) currentSession = 1;
-    if (currentSession > totalSessions) currentSession = totalSessions;
+    if (currentSession > 6) currentSession = 6;
     
-    updateSessionVisibility();
-  }
-
-  function updateSessionVisibility() {
-    document.querySelectorAll('.session-content').forEach((el, index) => {
-      el.classList.toggle('active', (index + 1) === currentSession);
+    document.querySelectorAll('.session-block').forEach((b, i) => {
+      b.style.display = (i + 1 === currentSession) ? 'block' : 'none';
     });
 
-    document.getElementById('sessionIndicator').innerText = `Sessão ${currentSession} / ${totalSessions}`;
+    document.getElementById('sessionIndicator').innerText = `Sessão ${currentSession} de 6`;
     document.getElementById('prevBtn').disabled = (currentSession === 1);
-    document.getElementById('nextBtn').disabled = (currentSession === totalSessions);
+    document.getElementById('nextBtn').disabled = (currentSession === 6);
   }
 
-  function renderDashboard() {
-    const data = brandData[currentBrand];
+  function render() {
+    const d = rawData[currentBrand];
 
-    // Sessão 1
-    document.getElementById('cards-s1').innerHTML = `
-      <div class="card"><h4>Acionados</h4><p>${data.s1.acionados}</p></div>
-      <div class="card"><h4>Promessas</h4><p>${data.s1.promessas}</p></div>
-      <div class="card"><h4>Valor Entrada</h4><p>${data.s1.valorEntrada}</p></div>
-    `;
-    document.getElementById('desc-s1').innerText = data.s1.descricao;
+    // KPIs
+    document.getElementById('kpi-cards').innerHTML = d.kpis.map(k => `
+      <div class="metric-card">
+        <div class="title">${k.t}</div>
+        <div class="value">${k.v}</div>
+      </div>
+    `).join('');
 
-    // Sessão 2
-    const tbodyS2 = document.getElementById('table-s2');
-    tbodyS2.innerHTML = data.s2.map(item => `
-      <tr style="${item.unidade === 'TOTAL' ? 'font-weight: bold; background-color: rgba(255,255,255,0.05);' : ''}">
-        <td>${item.unidade}</td>
-        <td>${item.acionados}</td>
-        <td>${item.promessas}</td>
-        <td>${item.recusas}</td>
-        <td>${item.valor}</td>
-        <td>${item.ticket}</td>
-        <td>${item.conversao}</td>
+    // Tabela Unidades
+    document.getElementById('table-unidades').innerHTML = d.unidades.map(u => `
+      <tr class="${u[0] === 'TOTAL' ? 'total-row' : ''}">
+        ${u.map(cell => `<td>${cell}</td>`).join('')}
       </tr>
     `).join('');
 
-    // Sessão 3
-    const tbodyS3 = document.getElementById('table-s3');
-    tbodyS3.innerHTML = data.s3.map(item => `
-      <tr style="${item.nome.includes('TOTAL') ? 'font-weight: bold; background-color: rgba(255,255,255,0.05);' : ''}">
-        <td>${item.nome}</td>
-        <td>${item.promessas}</td>
-        <td>${item.valor}</td>
-        <td>${item.ef}</td>
-        <td>${item.meta}</td>
+    // Tabela Colaboradores
+    document.getElementById('table-colaboradores').innerHTML = d.colaboradores.map(c => `
+      <tr class="${c[0].includes('TOTAL') ? 'total-row' : ''}">
+        ${c.map(cell => `<td>${cell}</td>`).join('')}
       </tr>
     `).join('');
 
-    // Sessão 4
-    document.getElementById('desc-s4').innerText = data.s4;
+    // Textos
+    document.getElementById('txt-metas').innerText = d.metas;
+    document.getElementById('txt-ticket-alto').innerText = d.ticketAlto;
+    document.getElementById('txt-analista').innerText = d.analista;
+    document.getElementById('txt-acao').innerText = d.acao;
 
-    // Sessão 5
-    document.getElementById('desc-s5-ticket').innerText = data.s5.ticket;
-    document.getElementById('desc-s5-analyst').innerText = data.s5.analyste;
-
-    // Sessão 6
-    document.getElementById('desc-s6').innerText = data.s6;
+    // Chart
+    renderChart(d);
   }
 
-  // Inicialização
-  renderDashboard();
-  updateSessionVisibility();
+  function renderChart(d) {
+    const ctx = document.getElementById('overviewChart');
+    if (chartInstance) chartInstance.destroy();
+
+    const labels = d.unidades.filter(u => u[0] !== 'TOTAL').map(u => u[0]);
+    const values = d.unidades.filter(u => u[0] !== 'TOTAL').map(u => parseInt(u[2]));
+
+    chartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Promessas de Acordo',
+          data: values,
+          backgroundColor: '#0c2a4d',
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+
+  render();
 </script>
 
 </body>
