@@ -153,8 +153,9 @@
       <div style="height: 350px;"><canvas id="mainChart"></canvas></div>
     </div>
 
+    <!-- Sessão 3 Atualizada -->
     <div id="session-3" class="session-content">
-      <h2 class="session-header">Sessão 3/6: Comparativo entre Unidades</h2>
+      <h2 class="session-header">Sessão 3/6: Comparativo entre Unidades - Semana</h2>
       <div style="overflow-x: auto;">
         <table>
           <thead>
@@ -165,14 +166,15 @@
       </div>
     </div>
 
+    <!-- Sessão 4 Atualizada -->
     <div id="session-4" class="session-content">
-      <h2 class="session-header">Sessão 4/6: Desempenho de Metas por Colaborador</h2>
+      <h2 class="session-header">Sessão 4/6: Comparativo entre Acumulado</h2>
       <div style="overflow-x: auto;">
         <table>
           <thead>
-            <tr><th>Atendente</th><th>Promessas</th><th>Valor Entrada</th><th>Efetividade (60%)</th><th>% Meta (R$ 100k)</th></tr>
+            <tr><th>Unidade / Marca (Mês Vigente)</th><th>Promessas Acumuladas</th><th>Valor Entrada Negociado</th><th>Efetividade Esperada (60%)</th></tr>
           </thead>
-          <tbody id="tableColaboradores"></tbody>
+          <tbody id="tableAcumulado"></tbody>
         </table>
       </div>
     </div>
@@ -215,16 +217,16 @@
         ["Wyden (Consolidado)", "54", "50", "4", "R$ 115.718,73", "R$ 2.314,37", "92,6%"],
         ["TOTAL GERAL", "752", "616", "96", "R$ 1.690.968,75", "R$ 2.745,08", "81,9%"]
       ],
-      colaboradores: [
-        ["RARIANE NELIZE (IDOMED)", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"],
-        ["DAVI HENRIQUE (Estácio)", "88", "R$ 285.369,53", "R$ 171.221,72", "171,2%"],
-        ["PAOLLA FERNANDA (Wyden)", "110", "R$ 221.163,74", "R$ 132.698,24", "132,7%"],
-        ["JOICE MIRANDA (Estácio)", "151", "R$ 212.704,71", "R$ 127.622,83", "127,6%"]
+      acumulado: [
+        ["Estácio (Acumulado Set/2026)", "1718", "R$ 2.346.617,33", "R$ 1.407.970,40"],
+        ["IDOMED (Acumulado Semanal)", "21", "R$ 847.628,62", "R$ 508.577,17"],
+        ["Wyden (Acumulado Set/2026)", "153", "R$ 288.488,14", "R$ 173.092,88"],
+        ["TOTAL ACUMULADO MÊS", "1892", "R$ 3.482.734,09", "R$ 2.089.640,45"]
       ],
-      metas: "No período de 14/09 a 18/09/2026 foram geradas 616 promessas somando R$ 1.690.968,75 em valor de entrada negociado nas 3 marcas.",
-      ticketAlto: "A maior oportunidade de ticket alto do período pertence à IDOMED com a aluna PAMELA SENA NASCIMENTO (R$ 121.914,90).",
-      analista: "IDOMED mantém 100% de conversão. Wyden apresenta 92,6% de conversão e a Estácio 80,5%.",
-      acao: "Enviar disparos preventivos de lembrete via WhatsApp 24h antes do vencimento para garantir a taxa de efetividade mínima."
+      metas: "No período de 14/09 a 18/09/2026 foram geradas 616 promessas somando R$ 1.690.968,75 em valor de entrada negociado nas 3 marcas[cite: 29, 30, 31].",
+      ticketAlto: "A maior oportunidade de ticket alto do período pertence à IDOMED com a aluna PAMELA SENA NASCIMENTO (R$ 121.914,90)[cite: 30].",
+      analista: "IDOMED mantém 100% de conversão[cite: 30]. Wyden apresenta 92,6% de conversão[cite: 31] e a Estácio 80,5%[cite: 29].",
+      acao: "Enviar disparos preventivos de lembrete via WhatsApp 24h antes do vencimento para garantir a taxa de efetividade mínima[cite: 29, 30, 31]."
     },
     estacio: {
       sub: "Recuperação de Crédito · Estácio",
@@ -254,38 +256,14 @@
         ["NITEROI - RJ", "10", "7", "3", "R$ 15.291,51", "R$ 2.184,50", "70,0%"],
         ["TOTAL", "677", "545", "92", "R$ 727.621,40", "R$ 1.335,09", "80,5%"]
       ],
-      colaboradores: [
-        ["DAVI HENRIQUE SANTOS SILVA", "88", "R$ 285.369,53", "R$ 171.221,72", "171,2%"],
-        ["JOICE MIRANDA OLIVEIRA", "151", "R$ 212.704,71", "R$ 127.622,83", "127,6%"],
-        ["DEBORA TANIA PEREIRA DA SILVA", "59", "R$ 173.487,81", "R$ 104.092,69", "104,1%"],
-        ["MARIA DOS REMEDIOS RABELO PEREIRA", "81", "R$ 125.718,05", "R$ 75.430,83", "75,4%"],
-        ["JOAO GUILHERME BELEM CHAVES", "60", "R$ 101.655,09", "R$ 60.993,05", "61,0%"],
-        ["MAIARA SOUZA MARTINS", "61", "R$ 95.410,41", "R$ 57.246,25", "57,2%"],
-        ["LEINA LORENA NOGUEIRA DE OLIVEIRA", "75", "R$ 93.504,59", "R$ 56.102,75", "56,1%"],
-        ["LAYS MILENA RODRIGUES DA SILVA", "81", "R$ 91.953,79", "R$ 55.172,27", "55,2%"],
-        ["EVELLEN DE OLIVEIRA CINTRA DE CASTRO", "53", "R$ 90.821,70", "R$ 54.493,02", "54,5%"],
-        ["FREDERYCO NEIVA TAVEIROS DA SILVA", "70", "R$ 90.412,11", "R$ 54.247,27", "54,2%"],
-        ["MATHEUS DO NASCIMENTO PEREIRA", "63", "R$ 88.739,31", "R$ 53.243,59", "53,2%"],
-        ["HELENA DOS SANTOS MELO", "86", "R$ 88.613,53", "R$ 53.168,12", "53,2%"],
-        ["CAIO MARCELO FAGUNDES", "99", "R$ 82.483,88", "R$ 49.490,33", "49,5%"],
-        ["MARIEL GOULART ANSELMO", "80", "R$ 75.118,58", "R$ 45.071,15", "45,1%"],
-        ["CLAUDIONORA MARIA SIMOES OLIVEIRA", "40", "R$ 71.773,96", "R$ 43.064,38", "43,1%"],
-        ["LAISLA MARIA SANTOS VINHAES", "49", "R$ 71.472,75", "R$ 42.883,65", "42,9%"],
-        ["ANA BEATRIZ DE SOUZA PEREIRA DA SILVA", "55", "R$ 66.692,59", "R$ 40.015,55", "40,0%"],
-        ["THIAGO GABRIEL RODRIGUES DOS SANTOS", "61", "R$ 65.873,77", "R$ 39.524,26", "39,5%"],
-        ["PEDRO FELIPE SOARES PINTO", "85", "R$ 63.332,78", "R$ 37.999,67", "38,0%"],
-        ["ANNY MAYRE VIRGINIO DA SILVA LIMA", "66", "R$ 62.844,55", "R$ 37.706,73", "37,7%"],
-        ["EDUARDA BARRETO FAUSTINO", "66", "R$ 60.270,89", "R$ 36.162,53", "36,2%"],
-        ["GREICE KELLY DE ALBUQUERQUE OLIVEIRA", "64", "R$ 58.185,98", "R$ 34.911,59", "34,9%"],
-        ["JHENIFER GRATIVOL FLORENCIO", "52", "R$ 57.539,34", "R$ 34.523,60", "34,5%"],
-        ["YEDA VITORIA BATISTA DA COSTA", "53", "R$ 52.342,80", "R$ 31.405,68", "31,4%"],
-        ["JULIO CESAR DA SILVA BARTOLETTE", "20", "R$ 20.294,83", "R$ 12.176,90", "12,2%"],
-        ["TOTAL MÊS", "1718", "R$ 2.346.617,33", "R$ 1.407.970,40", "-"]
+      acumulado: [
+        ["Estácio - Acumulado Geral Mês", "1718", "R$ 2.346.617,33", "R$ 1.407.970,40"],
+        ["TOTAL MÊS ESTÁCIO", "1718", "R$ 2.346.617,33", "R$ 1.407.970,40"]
       ],
-      metas: "Em set/2026 foram geradas 1718 promessas, com valor de entrada de R$ 2.346.617,33. Espera-se recuperar R$ 1.407.970,40 no mês.",
-      ticketAlto: "MARCELLE FERNANDES MARUJO registrou R$ 18.315,20 com vencimento em 14/09/2026.",
-      analista: "TAGUATINGA - DF apresentou 96,6% de conversão com forma principal em BOLETO.",
-      acao: "Disparar lembrete automático via WhatsApp 24h antes do vencimento."
+      metas: "Em set/2026 foram geradas 1718 promessas, com valor de entrada de R$ 2.346.617,33[cite: 29]. Espera-se recuperar R$ 1.407.970,40 no mês[cite: 29].",
+      ticketAlto: "MARCELLE FERNANDES MARUJO registrou R$ 18.315,20 com vencimento em 14/09/2026[cite: 29].",
+      analista: "TAGUATINGA - DF apresentou 96,6% de conversão com forma principal em BOLETO[cite: 29].",
+      acao: "Disparar lembrete automático via WhatsApp 24h antes do vencimento[cite: 29]."
     },
     wyden: {
       sub: "Recuperação de Crédito · Wyden",
@@ -296,15 +274,15 @@
         ["UniFacid Wyden - Teresina", "13", "11", "2", "R$ 22.477,80", "R$ 2.043,44", "84,6%"],
         ["TOTAL", "54", "50", "4", "R$ 115.718,73", "R$ 2.314,37", "92,6%"]
       ],
-      colaboradores: [
-        ["PAOLLA FERNANDA DE FRANCA GUIMARAES", "110", "R$ 221.163,74", "R$ 132.698,24", "132,7%"],
-        ["PEDRO HENRIQUE PESSOA BARROS", "43", "R$ 67.324,40", "R$ 40.394,64", "40,4%"],
-        ["TOTAL MÊS", "153", "R$ 288.488,14", "R$ 173.092,88", "-"]
+      acumulado: [
+        ["UniFavip Wyden - Caruaru", "110", "R$ 221.163,74", "R$ 132.698,24"],
+        ["UniFacid Wyden - Teresina", "43", "R$ 67.324,40", "R$ 40.394,64"],
+        ["TOTAL MÊS WYDEN", "153", "R$ 288.488,14", "R$ 173.092,88"]
       ],
-      metas: "Em set/2026 foram geradas 153 promessas na Wyden. Espera-se recuperar R$ 173.092,88 no mês.",
-      ticketAlto: "ARICIA KERLANNY SILVA RAMOS LEITE registrou R$ 13.910,63 com vencimento em 18/09/2026.",
-      analista: "O volume de promessas atingiu patamar satisfatório, destacando-se a UniFavip Caruaru com 95,1% de conversão.",
-      acao: "Intensificar o acompanhamento nas unidades com maior volume para garantir a conversão efetiva dos valores negociados."
+      metas: "Em set/2026 foram geradas 153 promessas na Wyden[cite: 31]. Espera-se recuperar R$ 173.092,88 no mês[cite: 31].",
+      ticketAlto: "ARICIA KERLANNY SILVA RAMOS LEITE registrou R$ 13.910,63 com vencimento em 18/09/2026[cite: 31].",
+      analista: "O volume de promessas atingiu patamar satisfatório, destacando-se a UniFavip Caruaru com 95,1% de conversão[cite: 31].",
+      acao: "Intensificar o acompanhamento nas unidades com maior volume para garantir a conversão efetiva dos valores negociados[cite: 31]."
     },
     idomed: {
       sub: "Recuperação de Crédito · IDOMED",
@@ -314,14 +292,14 @@
         ["Idomed (Cittá - RJ)", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"],
         ["TOTAL", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"]
       ],
-      colaboradores: [
-        ["RARIANE NELIZE DO COUTO SOUZA", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"],
-        ["TOTAL SEMANA", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"]
+      acumulado: [
+        ["Idomed (Cittá - RJ)", "21", "R$ 847.628,62", "R$ 508.577,17"],
+        ["TOTAL SEMANA IDOMED", "21", "R$ 847.628,62", "R$ 508.577,17"]
       ],
-      metas: "Na semana foram geradas 21 promessas resultando em R$ 847.628,62 negociados.",
-      ticketAlto: "PAMELA SENA NASCIMENTO registrou R$ 121.914,90 de entrada.",
-      analista: "100% de conversão com taxa de recusa zerada (0,0%).",
-      acao: "Manter acompanhamento próximo para efetivação dos pagamentos via PIX e boleto."
+      metas: "Na semana foram geradas 21 promessas resultando em R$ 847.628,62 negociados[cite: 30].",
+      ticketAlto: "PAMELA SENA NASCIMENTO registrou R$ 121.914,90 de entrada[cite: 30].",
+      analista: "100% de conversão com taxa de recusa zerada (0,0%)[cite: 30].",
+      acao: "Manter acompanhamento próximo para efetivação dos pagamentos via PIX e boleto[cite: 30]."
     }
   };
 
@@ -368,7 +346,7 @@
       </tr>
     `).join('');
 
-    document.getElementById('tableColaboradores').innerHTML = d.colaboradores.map(c => `
+    document.getElementById('tableAcumulado').innerHTML = d.acumulado.map(c => `
       <tr class="${c[0].includes('TOTAL') ? 'total-row' : ''}">
         ${c.map(cell => `<td>${cell}</td>`).join('')}
       </tr>
