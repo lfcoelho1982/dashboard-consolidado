@@ -2,254 +2,262 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Executivo Consolidado - Intervalor</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
   <style>
     :root {
-      --navy: #0c2a4d;
-      --navy-light: #1f568f;
-      --accent: #f5a623;
-      --ink: #10233b;
-      --muted: #5c6970;
-      --bg-app: #eef1f5;
-      --bg-card: #f8fafc;
-      --bg-panel: #f5f8fb;
-      --border: #e3eaf2;
+      --header-bg: #0c2a4d;
+      --accent-yellow: #f5a623;
+      --estacio-color: #00a8e8;
+      --wyden-color: #e60000;
+      --idomed-color: #004d40;
+      --bg-body: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-main: #1a252c;
+      --text-muted: #6c7a89;
+      --border-color: #e1e8ed;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-    body { background-color: var(--bg-app); color: var(--ink); padding: 20px; display: flex; justify-content: center; }
-    .app-container { width: 100%; max-width: 1280px; background: #ffffff; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); padding: 24px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+    body { background-color: var(--bg-body); color: var(--text-main); padding-top: 60px; min-height: 100vh; }
 
-    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 16px; margin-bottom: 20px; }
-    header h1 { font-size: 1.5rem; color: var(--navy); display: flex; align-items: center; gap: 10px; }
-    header .subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+    /* Header Fixo Superior */
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 60px;
+      background-color: var(--header-bg); color: #fff;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .brand-logo { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .brand-logo i { color: var(--accent-yellow); font-size: 1.3rem; }
 
-    .brand-tabs { display: flex; gap: 8px; margin-bottom: 20px; background: var(--bg-app); padding: 6px; border-radius: 8px; }
-    .brand-tab { flex: 1; padding: 10px 16px; border: none; background: transparent; border-radius: 6px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.2s; text-align: center; }
-    .brand-tab.active { background: var(--navy); color: #fff; box-shadow: 0 2px 8px rgba(12,42,77,0.25); }
+    .header-nav { display: flex; align-items: center; gap: 16px; }
+    .nav-pills { display: flex; background: rgba(255,255,255,0.1); padding: 4px; border-radius: 20px; gap: 4px; }
+    .pill-btn {
+      background: transparent; border: none; color: #fff; padding: 6px 14px;
+      border-radius: 16px; font-size: 0.85rem; cursor: pointer; font-weight: 600;
+    }
+    .pill-btn.active { background-color: var(--accent-yellow); color: #000; }
 
-    .session-nav { display: flex; justify-content: space-between; align-items: center; background: var(--navy-light); color: #fff; padding: 10px 16px; border-radius: 8px; margin-bottom: 20px; }
-    .session-nav button { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: 600; }
-    .session-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .session-arrows { display: flex; align-items: center; gap: 10px; color: #fff; }
+    .arrow-btn {
+      background: rgba(255,255,255,0.15); border: none; color: #fff;
+      width: 32px; height: 32px; border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .arrow-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; border-left: 4px solid var(--navy); }
-    .metric-card .title { font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-    .metric-card .value { font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-top: 6px; }
+    /* Layout do Conteúdo Principal */
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
 
-    .content-panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; min-height: 380px; }
-    .panel-title { font-size: 1.1rem; color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    /* Capa / Sessão 1 Inicial */
+    .hero-section { text-align: center; padding: 30px 20px; }
+    .hero-icon { font-size: 3.5rem; color: var(--accent-yellow); margin-bottom: 20px; }
+    .hero-title { font-size: 2.2rem; font-weight: 800; color: #0c2a4d; margin-bottom: 10px; }
+    .hero-subtitle { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 25px; }
 
-    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; background: #fff; border-radius: 6px; overflow: hidden; }
-    th { background: var(--navy); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; }
-    td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
-    tr:nth-child(even) { background-color: #f8fafc; }
+    .brand-badges { display: flex; justify-content: center; gap: 12px; margin-bottom: 25px; }
+    .badge {
+      padding: 8px 20px; border-radius: 20px; color: #fff; font-weight: 700;
+      font-size: 0.9rem; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .badge-estacio { background-color: var(--estacio-color); }
+    .badge-wyden { background-color: var(--wyden-color); }
+    .badge-idomed { background-color: var(--idomed-color); }
+
+    .date-pill {
+      display: inline-block; background: #fff3e0; color: #d97706; font-weight: 700;
+      padding: 8px 24px; border-radius: 20px; font-size: 0.95rem; margin-bottom: 20px;
+      border: 1px solid #ffe0b2;
+    }
+
+    .hero-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 30px; }
+    .start-btn {
+      background: linear-gradient(135deg, #f5a623, #f39c12); color: #000;
+      border: none; padding: 14px 36px; border-radius: 25px; font-weight: 700;
+      font-size: 1.05rem; cursor: pointer; box-shadow: 0 6px 15px rgba(245,166,35,0.4);
+      transition: transform 0.2s;
+    }
+    .start-btn:hover { transform: translateY(-2px); }
+
+    /* Sessões Internas */
+    .session-content { display: none; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .session-content.active { display: block; }
+    .session-header { font-size: 1.3rem; color: #0c2a4d; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+
+    /* Cards KPI */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 25px; }
+    .kpi-card { background: var(--bg-body); border-left: 4px solid var(--header-bg); padding: 16px; border-radius: 8px; }
+    .kpi-title { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; }
+    .kpi-value { font-size: 1.6rem; font-weight: 800; color: #0c2a4d; margin-top: 6px; }
+
+    /* Tabelas */
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+    th { background: #0c2a4d; color: #fff; text-align: left; padding: 10px; }
+    td { padding: 10px; border-bottom: 1px solid var(--border-color); }
+    tr:nth-child(even) { background: #f8fafc; }
     tr.total-row { font-weight: 700; background: #eef4fb; }
 
-    .chart-container { position: relative; height: 320px; width: 100%; }
-    .insight-card { background: #fff; border-left: 4px solid var(--accent); padding: 14px 18px; border-radius: 6px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    .insight-card h4 { color: var(--navy); margin-bottom: 6px; font-size: 0.95rem; }
-    .insight-card p { font-size: 0.9rem; color: var(--ink); line-height: 1.4; }
+    .insight-card { background: #fdf8f0; border-left: 4px solid var(--accent-yellow); padding: 16px; border-radius: 6px; margin-bottom: 15px; }
+    .insight-card h4 { color: #0c2a4d; margin-bottom: 6px; }
   </style>
 </head>
 <body>
 
-<div class="app-container">
-  <header>
-    <div>
-      <h1><i class="fa-solid fa-chart-line"></i> Relatório Consolidado de Promessas de Acordo</h1>
-      <div class="subtitle">Análise Semanal Executiva | Período: 14/09/2026 a 18/09/2026</div>
+  <!-- Topbar Fixa -->
+  <div class="top-bar">
+    <div class="brand-logo">
+      <i class="fa-solid fa-layer-group"></i> Intervalor · Consolidado Multimarcas
     </div>
-  </header>
-
-  <!-- Seletor de Marcas -->
-  <div class="brand-tabs">
-    <button class="brand-tab active" onclick="switchBrand('estacio')">Estácio</button>
-    <button class="brand-tab" onclick="switchBrand('idomed')">IDOMED</button>
-    <button class="brand-tab" onclick="switchBrand('wyden')">Wyden</button>
-  </div>
-
-  <!-- Navegação de Sessões -->
-  <div class="session-nav">
-    <button id="prevBtn" onclick="changeSession(-1)"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
-    <span id="sessionIndicator" style="font-weight: 600;">Sessão 1 de 6</span>
-    <button id="nextBtn" onclick="changeSession(1)">Próxima <i class="fa-solid fa-chevron-right"></i></button>
-  </div>
-
-  <!-- Sessão 1: Resumo Executivo & Gráfico -->
-  <div id="session-1" class="session-block">
-    <div class="card-grid" id="kpi-cards"></div>
-    <div class="content-panel">
-      <div class="panel-title"><i class="fa-solid fa-chart-bar"></i> Visão Geral de Desempenho por Unidade</div>
-      <div class="chart-container"><canvas id="overviewChart"></canvas></div>
+    
+    <div class="header-nav">
+      <div style="font-size: 0.85rem; opacity: 0.8;">MARCA</div>
+      <div class="nav-pills">
+        <button class="pill-btn active" onclick="switchBrand('todas')">● Todas</button>
+        <button class="pill-btn" onclick="switchBrand('estacio')">● Estácio</button>
+        <button class="pill-btn" onclick="switchBrand('wyden')">● WYDEN</button>
+        <button class="pill-btn" onclick="switchBrand('idomed')">● IDOMED</button>
+      </div>
+      
+      <div class="session-arrows">
+        <button class="arrow-btn" id="prevBtn" onclick="changeSession(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <span id="sessionIndicator" style="font-weight: 700;">1 / 6</span>
+        <button class="arrow-btn" id="nextBtn" onclick="changeSession(1)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
     </div>
   </div>
 
-  <!-- Sessão 2: Comparativo entre Unidades -->
-  <div id="session-2" class="session-block" style="display:none;">
-    <div class="content-panel">
-      <div class="panel-title"><i class="fa-solid fa-building-columns"></i> Comparativo entre Unidades</div>
+  <div class="container">
+    
+    <!-- Sessão 1: Tela de Boas-Vindas / Capa -->
+    <div id="session-1" class="session-content active" style="background: transparent; box-shadow: none;">
+      <div class="hero-section">
+        <div class="hero-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+        <h1 class="hero-title">Dashboard Executivo Consolidado</h1>
+        <p class="hero-subtitle" id="heroSub">Recuperação de Crédito · Todas as marcas</p>
+
+        <div class="brand-badges">
+          <button class="badge badge-estacio" onclick="switchBrand('estacio')">Estácio</button>
+          <button class="badge badge-wyden" onclick="switchBrand('wyden')">WYDEN</button>
+          <button class="badge badge-idomed" onclick="switchBrand('idomed')">IDOMED</button>
+        </div>
+
+        <div class="date-pill">14/09 ➔ 18/09 · 2026</div>
+
+        <p class="hero-desc">Visão consolidada das marcas atendidas pela Intervalor<br>Promessas de acordo, comparativo entre marcas e plano de ação.</p>
+
+        <button class="start-btn" onclick="changeSession(1)">Iniciar análise ➔</button>
+      </div>
+    </div>
+
+    <!-- Sessão 2: Resumo Executivo & KPIs -->
+    <div id="session-2" class="session-content">
+      <h2 class="session-header">Sessão 2/6: Resumo Executivo Consolidado</h2>
+      <div class="kpi-grid" id="kpiGrid"></div>
+      <div style="height: 300px;"><canvas id="mainChart"></canvas></div>
+    </div>
+
+    <!-- Sessão 3: Comparativo entre Unidades -->
+    <div id="session-3" class="session-content">
+      <h2 class="session-header">Sessão 3/6: Comparativo entre Unidades</h2>
       <div style="overflow-x: auto;">
         <table>
           <thead>
-            <tr>
-              <th>Unidade</th>
-              <th>Acionados</th>
-              <th>Promessas</th>
-              <th>Recusas</th>
-              <th>Valor Entrada</th>
-              <th>Ticket Médio</th>
-              <th>% Conversão</th>
-            </tr>
+            <tr><th>Unidade</th><th>Acionados</th><th>Promessas</th><th>Recusas</th><th>Valor Entrada</th><th>Ticket Médio</th><th>% Conversão</th></tr>
           </thead>
-          <tbody id="table-unidades"></tbody>
+          <tbody id="tableUnidades"></tbody>
         </table>
       </div>
     </div>
-  </div>
 
-  <!-- Sessão 3: Desempenho por Colaborador -->
-  <div id="session-3" class="session-block" style="display:none;">
-    <div class="content-panel">
-      <div class="panel-title"><i class="fa-solid fa-users"></i> Desempenho de Metas (Mensal, por Colaborador)</div>
+    <!-- Sessão 4: Desempenho por Colaborador -->
+    <div id="session-4" class="session-content">
+      <h2 class="session-header">Sessão 4/6: Desempenho de Metas por Colaborador</h2>
       <div style="overflow-x: auto;">
         <table>
           <thead>
-            <tr>
-              <th>Atendente</th>
-              <th>Promessas</th>
-              <th>Valor Entrada</th>
-              <th>Efetividade (60%)</th>
-              <th>% Meta (R$ 100k)</th>
-            </tr>
+            <tr><th>Atendente</th><th>Promessas</th><th>Valor Entrada</th><th>Efetividade (60%)</th><th>% Meta (R$ 100k)</th></tr>
           </thead>
-          <tbody id="table-colaboradores"></tbody>
+          <tbody id="tableColaboradores"></tbody>
         </table>
       </div>
     </div>
-  </div>
 
-  <!-- Sessão 4: Leitura de Metas -->
-  <div id="session-4" class="session-block" style="display:none;">
-    <div class="content-panel">
-      <div class="panel-title"><i class="fa-solid fa-bullseye"></i> Leitura de Metas</div>
+    <!-- Sessão 5: Leitura de Metas & Insights -->
+    <div id="session-5" class="session-content">
+      <h2 class="session-header">Sessão 5/6: Insights Estratégicos & Oportunidades</h2>
       <div class="insight-card">
-        <h4>Projeção de Recuperação</h4>
-        <p id="txt-metas"></p>
+        <h4><i class="fa-solid fa-bullseye"></i> Leitura de Metas</h4>
+        <p id="txtMetas"></p>
       </div>
-    </div>
-  </div>
-
-  <!-- Sessão 5: Insights Estratégicos -->
-  <div id="session-5" class="session-block" style="display:none;">
-    <div class="content-panel">
-      <div class="panel-title"><i class="fa-solid fa-lightbulb"></i> Insights Estratégicos & Atenção</div>
       <div class="insight-card">
-        <h4><i class="fa-solid fa-star" style="color:var(--accent)"></i> Oportunidade de Ticket Alto</h4>
-        <p id="txt-ticket-alto"></p>
+        <h4><i class="fa-solid fa-star" style="color: var(--accent-yellow)"></i> Oportunidade de Ticket Alto</h4>
+        <p id="txtTicketAlto"></p>
       </div>
       <div class="insight-card">
         <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Observação do Analista</h4>
-        <p id="txt-analista"></p>
+        <p id="txtAnalista"></p>
       </div>
     </div>
-  </div>
 
-  <!-- Sessão 6: Ação Recomendada -->
-  <div id="session-6" class="session-block" style="display:none;">
-    <div class="content-panel">
-      <div class="panel-title"><i class="fa-solid fa-list-check"></i> Plano de Ação Recomendado</div>
-      <div class="insight-card" style="border-left-color: var(--navy);">
-        <h4>Ação Prioritária</h4>
-        <p id="txt-acao"></p>
+    <!-- Sessão 6: Plano de Ação -->
+    <div id="session-6" class="session-content">
+      <h2 class="session-header">Sessão 6/6: Plano de Ação Recomendado</h2>
+      <div class="insight-card" style="border-left-color: #0c2a4d;">
+        <h4><i class="fa-solid fa-list-check"></i> Ação Prioritária</h4>
+        <p id="txtAcao"></p>
       </div>
     </div>
+
   </div>
-</div>
 
 <script>
-  const rawData = {
+  const brandData = {
+    todas: {
+      sub: "Recuperação de Crédito · Consolidação Geral",
+      kpis: [{t:"Acionados",v:"752"}, {t:"Promessas",v:"616"}, {t:"Valor Entrada",v:"R$ 1.690.968,75"}, {t:"Efetividade Esperada",v:"R$ 1.014.581,25"}],
+      unidades: [
+        ["Estácio (Consolidado)", "677", "545", "92", "R$ 727.621,40", "R$ 1.335,09", "80,5%"],
+        ["IDOMED (Consolidado)", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"],
+        ["Wyden (Consolidado)", "54", "50", "4", "R$ 115.718,73", "R$ 2.314,37", "92,6%"],
+        ["TOTAL GERAL", "752", "616", "96", "R$ 1.690.968,75", "R$ 2.745,08", "81,9%"]
+      ],
+      colaboradores: [
+        ["RARIANE NELIZE (IDOMED)", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"],
+        ["DAVI HENRIQUE (Estácio)", "88", "R$ 285.369,53", "R$ 171.221,72", "171,2%"],
+        ["PAOLLA FERNANDA (Wyden)", "110", "R$ 221.163,74", "R$ 132.698,24", "132,7%"],
+        ["JOICE MIRANDA (Estácio)", "151", "R$ 212.704,71", "R$ 127.622,83", "127,6%"]
+      ],
+      metas: "No período de 14/09 a 18/09/2026 foram geradas 616 promessas somando R$ 1.690.968,75 em valor de entrada negociado nas 3 marcas[cite: 11, 12, 13].",
+      ticketAlto: "A maior oportunidade de ticket alto do período pertence à IDOMED com a aluna PAMELA SENA NASCIMENTO (R$ 121.914,90)[cite: 12].",
+      analista: "IDOMED mantém 100% de conversão com PIX[cite: 12]. Wyden apresenta 92,6% de conversão[cite: 13] e a Estácio 80,5%[cite: 11].",
+      acao: "Enviar disparos preventivos de lembrete de boleto/PIX via WhatsApp 24h antes do vencimento para garantir a taxa mínima de 60% de efetividade[cite: 11, 12, 13]."
+    },
     estacio: {
-      kpis: [{t: "Acionados", v: "677"}, {t: "Promessas", v: "545"}, {t: "Valor Entrada", v: "R$ 727.621,40"}, {t: "Conversão", v: "80,5%"}],
+      sub: "Recuperação de Crédito · Estácio",
+      kpis: [{t:"Acionados",v:"677"}, {t:"Promessas",v:"545"}, {t:"Valor Entrada",v:"R$ 727.621,40"}, {t:"Conversão",v:"80,5%"}],
       unidades: [
         ["TAGUATINGA - DF", "59", "57", "2", "R$ 40.817,03", "R$ 716,09", "96,6%"],
         ["MANAUS-AM", "63", "44", "17", "R$ 40.457,18", "R$ 919,48", "69,8%"],
         ["BELEM - PA", "52", "39", "13", "R$ 44.727,27", "R$ 1.146,85", "75,0%"],
-        ["SAO LUIS - MA", "53", "36", "13", "R$ 56.067,87", "R$ 1.557,44", "67,9%"],
-        ["MACAPA-AP", "37", "32", "4", "R$ 44.636,58", "R$ 1.394,89", "86,5%"],
-        ["ESTAÇÃO - GO", "31", "31", "0", "R$ 40.312,72", "R$ 1.300,41", "100,0%"],
         ["SALVADOR - BA", "30", "30", "0", "R$ 80.679,51", "R$ 2.689,32", "100,0%"],
-        ["ARACAJU - SE", "34", "28", "1", "R$ 28.106,00", "R$ 1.003,79", "82,4%"],
-        ["SANTA CRUZ - RJ", "35", "27", "8", "R$ 16.895,59", "R$ 625,76", "77,1%"],
-        ["FORTALEZA - CE", "41", "26", "5", "R$ 23.501,93", "R$ 903,92", "63,4%"],
-        ["MARACANA - RJ", "29", "25", "1", "R$ 35.510,19", "R$ 1.420,41", "86,2%"],
-        ["R9 TAQUARA - RJ", "29", "25", "4", "R$ 32.612,59", "R$ 1.304,50", "86,2%"],
-        ["NOVA IGUAÇU - RJ", "34", "24", "3", "R$ 42.170,61", "R$ 1.757,11", "70,6%"],
-        ["TERESINA - PI", "21", "21", "0", "R$ 36.638,62", "R$ 1.744,70", "100,0%"],
-        ["ABDIAS DE CARVALHO - PE", "24", "20", "4", "R$ 21.088,73", "R$ 1.054,44", "83,3%"],
-        ["JATIÚCA - AL", "22", "20", "0", "R$ 17.525,28", "R$ 876,26", "90,9%"],
-        ["TOM JOBIM - RJ", "18", "17", "0", "R$ 73.900,25", "R$ 4.347,07", "94,4%"],
-        ["CAMPO GRANDE - RJ", "24", "16", "8", "R$ 16.149,15", "R$ 1.009,32", "66,7%"],
-        ["CABO FRIO - RJ", "18", "12", "2", "R$ 9.564,58", "R$ 797,05", "66,7%"],
-        ["RECREIO - RJ", "13", "8", "4", "R$ 10.968,21", "R$ 1.371,03", "61,5%"],
-        ["NITEROI - RJ", "10", "7", "3", "R$ 15.291,51", "R$ 2.184,50", "70,0%"],
         ["TOTAL", "677", "545", "92", "R$ 727.621,40", "R$ 1.335,09", "80,5%"]
       ],
       colaboradores: [
         ["DAVI HENRIQUE SANTOS SILVA", "88", "R$ 285.369,53", "R$ 171.221,72", "171,2%"],
         ["JOICE MIRANDA OLIVEIRA", "151", "R$ 212.704,71", "R$ 127.622,83", "127,6%"],
-        ["DEBORA TANIA PEREIRA DA SILVA", "59", "R$ 173.487,81", "R$ 104.092,69", "104,1%"],
-        ["MARIA DOS REMEDIOS RABELO PEREIRA", "81", "R$ 125.718,05", "R$ 75.430,83", "75,4%"],
-        ["JOAO GUILHERME BELEM CHAVES", "60", "R$ 101.655,09", "R$ 60.993,05", "61,0%"],
-        ["MAIARA SOUZA MARTINS", "61", "R$ 95.410,41", "R$ 57.246,25", "57,2%"],
-        ["LEINA LORENA NOGUEIRA DE OLIVEIRA", "75", "R$ 93.504,59", "R$ 56.102,75", "56,1%"],
-        ["LAYS MILENA RODRIGUES DA SILVA", "81", "R$ 91.953,79", "R$ 55.172,27", "55,2%"],
-        ["EVELLEN DE OLIVEIRA CINTRA DE CASTRO", "53", "R$ 90.821,70", "R$ 54.493,02", "54,5%"],
-        ["FREDERYCO NEIVA TAVEIROS DA SILVA", "70", "R$ 90.412,11", "R$ 54.247,27", "54,2%"],
-        ["MATHEUS DO NASCIMENTO PEREIRA", "63", "R$ 88.739,31", "R$ 53.243,59", "53,2%"],
-        ["HELENA DOS SANTOS MELO", "86", "R$ 88.613,53", "R$ 53.168,12", "53,2%"],
-        ["CAIO MARCELO FAGUNDES", "99", "R$ 82.483,88", "R$ 49.490,33", "49,5%"],
-        ["MARIEL GOULART ANSELMO", "80", "R$ 75.118,58", "R$ 45.071,15", "45,1%"],
-        ["CLAUDIONORA MARIA SIMOES OLIVEIRA", "40", "R$ 71.773,96", "R$ 43.064,38", "43,1%"],
-        ["LAISLA MARIA SANTOS VINHAES", "49", "R$ 71.472,75", "R$ 42.883,65", "42,9%"],
-        ["ANA BEATRIZ DE SOUZA PEREIRA DA SILVA", "55", "R$ 66.692,59", "R$ 40.015,55", "40,0%"],
-        ["THIAGO GABRIEL RODRIGUES DOS SANTOS", "61", "R$ 65.873,77", "R$ 39.524,26", "39,5%"],
-        ["PEDRO FELIPE SOARES PINTO", "85", "R$ 63.332,78", "R$ 37.999,67", "38,0%"],
-        ["ANNY MAYRE VIRGINIO DA SILVA LIMA", "66", "R$ 62.844,55", "R$ 37.706,73", "37,7%"],
-        ["EDUARDA BARRETO FAUSTINO", "66", "R$ 60.270,89", "R$ 36.162,53", "36,2%"],
-        ["GREICE KELLY DE ALBUQUERQUE OLIVEIRA", "64", "R$ 58.185,98", "R$ 34.911,59", "34,9%"],
-        ["JHENIFER GRATIVOL FLORENCIO", "52", "R$ 57.539,34", "R$ 34.523,60", "34,5%"],
-        ["YEDA VITORIA BATISTA DA COSTA", "53", "R$ 52.342,80", "R$ 31.405,68", "31,4%"],
-        ["JULIO CESAR DA SILVA BARTOLETTE", "20", "R$ 20.294,83", "R$ 12.176,90", "12,2%"],
-        ["TOTAL MÊS", "1718", "R$ 2.346.617,33", "R$ 1.407.970,40", "-"]
+        ["DEBORA TANIA PEREIRA DA SILVA", "59", "R$ 173.487,81", "R$ 104.092,69", "104,1%"]
       ],
-      metas: "Em set/2026 foram geradas 1718 promessas, com valor de entrada (negociado) de R$ 2.346.617,33[cite: 11]. Aplicando a efetividade mínima de 60% de pagamento, espera-se recuperar R$ 1.407.970,40 no mês[cite: 11]. Meta de recuperação por colaborador: R$ 100.000,00[cite: 11]. No período, 3 de 25 colaborador(es) presentes no mês atingiriam a meta de R$ 100.000,00 com 60% de efetividade[cite: 11].",
-      ticketAlto: "O aluno MARCELLE FERNANDES MARUJO registrou o maior valor de entrada do período (R$ 18.315,20 do acordo total de R$ 18.315,20), vencimento em 14/09/2026, atendido por DEBORA TANIA PEREIRA DA SILVA[cite: 11]. Recomenda-se acompanhamento próximo para garantir a efetivação do pagamento da entrada[cite: 11].",
-      analista: "A unidade TAGUATINGA - DF apresentou 96,6% de conversão (promessas / acionados) no período; a forma de pagamento mais comum nas promessas foi BOLETO[cite: 11]. A taxa de recusa ficou em 13,6% (principal motivo: N/D)[cite: 11]. Recomenda-se priorizar o acompanhamento das unidades com menor taxa de conversão e maior volume de recusas[cite: 11].",
-      acao: "Disparar lembrete automático via WhatsApp 24 horas antes do vencimento da entrada de cada uma das promessas listadas, e reforçar junto aos atendedores que atingiram menor efetividade o acompanhamento da cobrança, mitigando o risco de quebra de acordo e garantindo o mínimo de 60% de efetividade e a meta de R$ 100.000,00 por colaborador ao fim do mês[cite: 11]."
+      metas: "Em set/2026 foram geradas 1718 promessas, com valor de entrada de R$ 2.346.617,33[cite: 11]. Espera-se recuperar R$ 1.407.970,40 no mês[cite: 11].",
+      ticketAlto: "MARCELLE FERNANDES MARUJO registrou R$ 18.315,20 com vencimento em 14/09/2026[cite: 11].",
+      analista: "TAGUATINGA - DF apresentou 96,6% de conversão com forma principal em BOLETO[cite: 11].",
+      acao: "Disparar lembrete automático via WhatsApp 24h antes do vencimento[cite: 11]."
     },
-
-    idomed: {
-      kpis: [{t: "Acionados", v: "21"}, {t: "Promessas", v: "21"}, {t: "Valor Entrada", v: "R$ 847.628,62"}, {t: "Conversão", v: "100,0%"}],
-      unidades: [
-        ["Idomed (Cittá - RJ)", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"],
-        ["TOTAL", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"]
-      ],
-      colaboradores: [
-        ["RARIANE NELIZE DO COUTO SOUZA", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"],
-        ["TOTAL SEMANA", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"]
-      ],
-      metas: "Na semana de 14/09/2026 a 18/09/2026 foram geradas 21 promessas, com valor de entrada (negociado) de R$ 847.628,62[cite: 12]. Aplicando a efetividade mínima de 60% de pagamento, espera-se recuperar R$ 508.577,17, o que representa 169,5% da meta semanal de R$ 300.000,00[cite: 12].",
-      ticketAlto: "O aluno PAMELA SENA NASCIMENTO registrou o maior valor de entrada do período (R$ 121.914,90 do acordo total de R$ 121.914,90), vencimento em 02/09/2026, atendido por RARIANE NELIZE DO COUTO SOUZA[cite: 12]. Recomenda-se acompanhamento próximo para garantir a efetivação do pagamento da entrada[cite: 12].",
-      analista: "A unidade Idomed (Cittá - RJ) apresentou 100% de conversão (promessas / acionados) no período; a forma de pagamento mais comum nas promessas foi PIX[cite: 12]. A taxa de recusa ficou em 0,0%[cite: 12]. Recomenda-se priorizar o acompanhamento das unidades com menor taxa de conversão e maior volume de recusas[cite: 12].",
-      acao: "Disparar lembrete automático via WhatsApp 24 horas antes do vencimento da entrada de cada uma das promessas listadas, e reforçar junto aos atendedores que atingiram menor efetividade o acompanhamento da cobrança, mitigando o risco de quebra de acordo e garantindo o mínimo de 60% de efetividade e a meta de R$ 100.000,00 por colaborador ao fim do mês[cite: 12]."
-    },
-
     wyden: {
-      kpis: [{t: "Acionados", v: "54"}, {t: "Promessas", v: "50"}, {t: "Valor Entrada", v: "R$ 115.718,73"}, {t: "Conversão", v: "92,6%"}],
+      sub: "Recuperação de Crédito · Wyden",
+      kpis: [{t:"Acionados",v:"54"}, {t:"Promessas",v:"50"}, {t:"Valor Entrada",v:"R$ 115.718,73"}, {t:"Conversão",v:"92,6%"}],
       unidades: [
         ["UniFavip Wyden - Caruaru", "39", "37", "2", "R$ 82.780,06", "R$ 2.237,30", "94,9%"],
         ["UniFacid Wyden - Teresina", "13", "11", "2", "R$ 22.477,80", "R$ 2.043,44", "84,6%"],
@@ -258,105 +266,109 @@
       ],
       colaboradores: [
         ["PAOLLA FERNANDA DE FRANCA GUIMARAES", "110", "R$ 221.163,74", "R$ 132.698,24", "132,7%"],
-        ["PEDRO HENRIQUE PESSOA BARROS", "43", "R$ 67.324,40", "R$ 40.394,64", "40,4%"],
-        ["TOTAL MÊS", "153", "R$ 288.488,14", "R$ 173.092,88", "-"]
+        ["PEDRO HENRIQUE PESSOA BARROS", "43", "R$ 67.324,40", "R$ 40.394,64", "40,4%"]
       ],
-      metas: "Em set/2026 foram geradas 153 promessas, com valor de entrada (negociado) de R$ 288.488,14[cite: 13]. Aplicando a efetividade mínima de 60% de pagamento, espera-se recuperar R$ 173.092,88 no mês[cite: 13]. Meta de recuperação por colaborador: R$ 100.000,00[cite: 13]. No período, 1 de 2 colaborador(es) presentes no mês atingiriam a meta de R$ 100.000,00 com 60% de efetividade[cite: 13].",
-      ticketAlto: "O aluno ARICIA KERLANNY SILVA RAMOS LEITE registrou o maior valor de entrada do período (R$ 13.910,63 do acordo total de R$ 13.910,63), vencimento em 18/09/2026, atendido por PAOLLA FERNANDA DE FRANCA GUIMARAES[cite: 13]. Recomenda-se acompanhamento próximo para garantir a efetivação do pagamento da entrada[cite: 13].",
-      analista: "A unidade UniFavip Wyden - Caruaru apresentou 94,9% de conversão (promessas / acionados) no período; a forma de pagamento mais comum nas promessas foi BOLETO[cite: 13]. A taxa de recusa ficou em 7,4% (principal motivo: N/D)[cite: 13]. Recomenda-se priorizar o acompanhamento das unidades com menor taxa de conversão e maior volume de recusas[cite: 13].",
-      acao: "Disparar lembrete automático via WhatsApp 24 horas antes do vencimento da entrada de cada uma das promessas listadas, e reforçar junto aos atendedores que atingiram menor efetividade o acompanhamento da cobrança, mitigando o risco de quebra de acordo e garantindo o mínimo de 60% de efetividade e a meta de R$ 100.000,00 por colaborador ao fim do mês[cite: 13]."
+      metas: "Em set/2026 foram geradas 153 promessas na Wyden[cite: 13]. Espera-se recuperar R$ 173.092,88 no mês[cite: 13].",
+      ticketAlto: "ARICIA KERLANNY SILVA RAMOS LEITE registrou R$ 13.910,63 com vencimento em 18/09/2026[cite: 13].",
+      analista: "UniFavip Caruaru liderou com 94,9% de conversão[cite: 13].",
+      acao: "Foco no acompanhamento de cobrança para garantir a meta de R$ 100k[cite: 13]."
+    },
+    idomed: {
+      sub: "Recuperação de Crédito · IDOMED",
+      kpis: [{t:"Acionados",v:"21"}, {t:"Promessas",v:"21"}, {t:"Valor Entrada",v:"R$ 847.628,62"}, {t:"Conversão",v:"100,0%"}],
+      unidades: [
+        ["Idomed (Cittá - RJ)", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"],
+        ["TOTAL", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"]
+      ],
+      colaboradores: [
+        ["RARIANE NELIZE DO COUTO SOUZA", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"]
+      ],
+      metas: "Na semana foram geradas 21 promessas resultando em R$ 847.628,62 negociados[cite: 12].",
+      ticketAlto: "PAMELA SENA NASCIMENTO registrou R$ 121.914,90 de entrada[cite: 12].",
+      analista: "100% de conversão com taxa de recusa zerada (0,0%)[cite: 12].",
+      acao: "Manter acompanhamento próximo para efetivação dos pagamentos de boleto/PIX[cite: 12]."
     }
   };
 
-  let currentBrand = 'estacio';
+  let currentBrand = 'todas';
   let currentSession = 1;
-  let chartInstance = null;
+  let chartObj = null;
 
-  function switchBrand(brand) {
-    currentBrand = brand;
-    document.querySelectorAll('.brand-tab').forEach(t => t.classList.remove('active'));
+  function switchBrand(brandKey) {
+    currentBrand = brandKey;
+    document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
     event.target.classList.add('active');
-    render();
+    renderData();
   }
 
   function changeSession(dir) {
     currentSession += dir;
     if (currentSession < 1) currentSession = 1;
     if (currentSession > 6) currentSession = 6;
-    
-    document.querySelectorAll('.session-block').forEach((b, i) => {
-      b.style.display = (i + 1 === currentSession) ? 'block' : 'none';
+
+    document.querySelectorAll('.session-content').forEach((s, idx) => {
+      s.classList.toggle('active', (idx + 1) === currentSession);
     });
 
-    document.getElementById('sessionIndicator').innerText = `Sessão ${currentSession} de 6`;
+    document.getElementById('sessionIndicator').innerText = `${currentSession} / 6`;
     document.getElementById('prevBtn').disabled = (currentSession === 1);
     document.getElementById('nextBtn').disabled = (currentSession === 6);
   }
 
-  function render() {
-    const d = rawData[currentBrand];
+  function renderData() {
+    const d = brandData[currentBrand];
+    document.getElementById('heroSub').innerText = d.sub;
 
-    // KPIs
-    document.getElementById('kpi-cards').innerHTML = d.kpis.map(k => `
-      <div class="metric-card">
-        <div class="title">${k.t}</div>
-        <div class="value">${k.v}</div>
+    document.getElementById('kpiGrid').innerHTML = d.kpis.map(k => `
+      <div class="kpi-card">
+        <div class="kpi-title">${k.t}</div>
+        <div class="kpi-value">${k.v}</div>
       </div>
     `).join('');
 
-    // Tabela Unidades
-    document.getElementById('table-unidades').innerHTML = d.unidades.map(u => `
-      <tr class="${u[0] === 'TOTAL' ? 'total-row' : ''}">
-        ${u.map(cell => `<td>${cell}</td>`).join('')}
+    document.getElementById('tableUnidades').innerHTML = d.unidades.map(u => `
+      <tr class="${u[0].includes('TOTAL') ? 'total-row' : ''}">
+        ${u.map(c => `<td>${c}</td>`).join('')}
       </tr>
     `).join('');
 
-    // Tabela Colaboradores
-    document.getElementById('table-colaboradores').innerHTML = d.colaboradores.map(c => `
+    document.getElementById('tableColaboradores').innerHTML = d.colaboradores.map(c => `
       <tr class="${c[0].includes('TOTAL') ? 'total-row' : ''}">
         ${c.map(cell => `<td>${cell}</td>`).join('')}
       </tr>
     `).join('');
 
-    // Textos
-    document.getElementById('txt-metas').innerText = d.metas;
-    document.getElementById('txt-ticket-alto').innerText = d.ticketAlto;
-    document.getElementById('txt-analista').innerText = d.analista;
-    document.getElementById('txt-acao').innerText = d.acao;
+    document.getElementById('txtMetas').innerText = d.metas;
+    document.getElementById('txtTicketAlto').innerText = d.ticketAlto;
+    document.getElementById('txtAnalista').innerText = d.analista;
+    document.getElementById('txtAcao').innerText = d.acao;
 
-    // Chart
     renderChart(d);
   }
 
   function renderChart(d) {
-    const ctx = document.getElementById('overviewChart');
-    if (chartInstance) chartInstance.destroy();
+    const ctx = document.getElementById('mainChart');
+    if (chartObj) chartObj.destroy();
 
-    const labels = d.unidades.filter(u => u[0] !== 'TOTAL').map(u => u[0]);
-    const values = d.unidades.filter(u => u[0] !== 'TOTAL').map(u => parseInt(u[2]));
+    const labels = d.unidades.filter(u => !u[0].includes('TOTAL')).map(u => u[0]);
+    const values = d.unidades.filter(u => !u[0].includes('TOTAL')).map(u => parseInt(u[2]));
 
-    chartInstance = new Chart(ctx, {
+    chartObj = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: labels,
         datasets: [{
-          label: 'Promessas de Acordo',
+          label: 'Promessas',
           data: values,
           backgroundColor: '#0c2a4d',
           borderRadius: 4
         }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } }
-      }
+      options: { responsive: true, maintainAspectRatio: false }
     });
   }
 
-  render();
+  renderData();
 </script>
-
 </body>
 </html>
