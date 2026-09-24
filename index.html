@@ -10,9 +10,7 @@
     :root {
       --header-bg: #0c2a4d;
       --accent-yellow: #f5a623;
-      --estacio-color: #00a8e8;
-      --wyden-color: #e60000;
-      --idomed-color: #004d40;
+      --brand-color: #00a8e8; /* Cor padrão inicial */
       --bg-body: #f4f6f9;
       --card-bg: #ffffff;
       --text-main: #1a252c;
@@ -20,8 +18,14 @@
       --border-color: #e1e8ed;
     }
 
+    /* Paletas de cor por marca */
+    body.theme-todas { --brand-color: #f5a623; }
+    body.theme-estacio { --brand-color: #00a8e8; }
+    body.theme-wyden { --brand-color: #e60000; }
+    body.theme-idomed { --brand-color: #004d40; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-    body { background-color: var(--bg-body); color: var(--text-main); padding-top: 60px; min-height: 100vh; }
+    body { background-color: var(--bg-body); color: var(--text-main); padding-top: 60px; min-height: 100vh; transition: background-color 0.3s; }
 
     /* Header Fixo Superior */
     .top-bar {
@@ -37,9 +41,9 @@
     .nav-pills { display: flex; background: rgba(255,255,255,0.1); padding: 4px; border-radius: 20px; gap: 4px; }
     .pill-btn {
       background: transparent; border: none; color: #fff; padding: 6px 14px;
-      border-radius: 16px; font-size: 0.85rem; cursor: pointer; font-weight: 600;
+      border-radius: 16px; font-size: 0.85rem; cursor: pointer; font-weight: 600; transition: all 0.2s;
     }
-    .pill-btn.active { background-color: var(--accent-yellow); color: #000; }
+    .pill-btn.active { background-color: var(--brand-color); color: #fff; }
 
     .session-arrows { display: flex; align-items: center; gap: 10px; color: #fff; }
     .arrow-btn {
@@ -54,7 +58,7 @@
 
     /* Capa / Sessão 1 Inicial */
     .hero-section { text-align: center; padding: 30px 20px; }
-    .hero-icon { font-size: 3.5rem; color: var(--accent-yellow); margin-bottom: 20px; }
+    .hero-icon { font-size: 3.5rem; color: var(--brand-color); margin-bottom: 20px; transition: color 0.3s; }
     .hero-title { font-size: 2.2rem; font-weight: 800; color: #0c2a4d; margin-bottom: 10px; }
     .hero-subtitle { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 25px; }
 
@@ -63,9 +67,9 @@
       padding: 8px 20px; border-radius: 20px; color: #fff; font-weight: 700;
       font-size: 0.9rem; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .badge-estacio { background-color: var(--estacio-color); }
-    .badge-wyden { background-color: var(--wyden-color); }
-    .badge-idomed { background-color: var(--idomed-color); }
+    .badge-estacio { background-color: #00a8e8; }
+    .badge-wyden { background-color: #e60000; }
+    .badge-idomed { background-color: #004d40; }
 
     .date-pill {
       display: inline-block; background: #fff3e0; color: #d97706; font-weight: 700;
@@ -75,10 +79,10 @@
 
     .hero-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 30px; }
     .start-btn {
-      background: linear-gradient(135deg, #f5a623, #f39c12); color: #000;
+      background: var(--brand-color); color: #fff;
       border: none; padding: 14px 36px; border-radius: 25px; font-weight: 700;
-      font-size: 1.05rem; cursor: pointer; box-shadow: 0 6px 15px rgba(245,166,35,0.4);
-      transition: transform 0.2s;
+      font-size: 1.05rem; cursor: pointer; box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      transition: transform 0.2s, background-color 0.3s;
     }
     .start-btn:hover { transform: translateY(-2px); }
 
@@ -89,22 +93,22 @@
 
     /* Cards KPI */
     .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 25px; }
-    .kpi-card { background: var(--bg-body); border-left: 4px solid var(--header-bg); padding: 16px; border-radius: 8px; }
+    .kpi-card { background: var(--bg-body); border-left: 4px solid var(--brand-color); padding: 16px; border-radius: 8px; transition: border-color 0.3s; }
     .kpi-title { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; }
     .kpi-value { font-size: 1.6rem; font-weight: 800; color: #0c2a4d; margin-top: 6px; }
 
     /* Tabelas */
     table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
-    th { background: #0c2a4d; color: #fff; text-align: left; padding: 10px; }
+    th { background: var(--header-bg); color: #fff; text-align: left; padding: 10px; }
     td { padding: 10px; border-bottom: 1px solid var(--border-color); }
     tr:nth-child(even) { background: #f8fafc; }
     tr.total-row { font-weight: 700; background: #eef4fb; }
 
-    .insight-card { background: #fdf8f0; border-left: 4px solid var(--accent-yellow); padding: 16px; border-radius: 6px; margin-bottom: 15px; }
+    .insight-card { background: #fdf8f0; border-left: 4px solid var(--brand-color); padding: 16px; border-radius: 6px; margin-bottom: 15px; transition: border-color 0.3s; }
     .insight-card h4 { color: #0c2a4d; margin-bottom: 6px; }
   </style>
 </head>
-<body>
+<body class="theme-todas">
 
   <!-- Topbar Fixa -->
   <div class="top-bar">
@@ -131,7 +135,7 @@
 
   <div class="container">
     
-    <!-- Sessão 1: Tela de Boas-Vindas / Capa -->
+    <!-- Sessão 1: Capa -->
     <div id="session-1" class="session-content active" style="background: transparent; box-shadow: none;">
       <div class="hero-section">
         <div class="hero-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
@@ -156,10 +160,10 @@
     <div id="session-2" class="session-content">
       <h2 class="session-header">Sessão 2/6: Resumo Executivo Consolidado</h2>
       <div class="kpi-grid" id="kpiGrid"></div>
-      <div style="height: 300px;"><canvas id="mainChart"></canvas></div>
+      <div style="height: 350px;"><canvas id="mainChart"></canvas></div>
     </div>
 
-    <!-- Sessão 3: Comparativo entre Unidades -->
+    <!-- Sessão 3: Comparativo entre Unidades (Todas as 21 Unidades da Estácio Incluídas) -->
     <div id="session-3" class="session-content">
       <h2 class="session-header">Sessão 3/6: Comparativo entre Unidades</h2>
       <div style="overflow-x: auto;">
@@ -193,7 +197,7 @@
         <p id="txtMetas"></p>
       </div>
       <div class="insight-card">
-        <h4><i class="fa-solid fa-star" style="color: var(--accent-yellow)"></i> Oportunidade de Ticket Alto</h4>
+        <h4><i class="fa-solid fa-star" style="color: var(--brand-color)"></i> Oportunidade de Ticket Alto</h4>
         <p id="txtTicketAlto"></p>
       </div>
       <div class="insight-card">
@@ -217,6 +221,7 @@
   const brandData = {
     todas: {
       sub: "Recuperação de Crédito · Consolidação Geral",
+      color: "#f5a623",
       kpis: [{t:"Acionados",v:"752"}, {t:"Promessas",v:"616"}, {t:"Valor Entrada",v:"R$ 1.690.968,75"}, {t:"Efetividade Esperada",v:"R$ 1.014.581,25"}],
       unidades: [
         ["Estácio (Consolidado)", "677", "545", "92", "R$ 727.621,40", "R$ 1.335,09", "80,5%"],
@@ -230,63 +235,107 @@
         ["PAOLLA FERNANDA (Wyden)", "110", "R$ 221.163,74", "R$ 132.698,24", "132,7%"],
         ["JOICE MIRANDA (Estácio)", "151", "R$ 212.704,71", "R$ 127.622,83", "127,6%"]
       ],
-      metas: "No período de 14/09 a 18/09/2026 foram geradas 616 promessas somando R$ 1.690.968,75 em valor de entrada negociado nas 3 marcas[cite: 11, 12, 13].",
-      ticketAlto: "A maior oportunidade de ticket alto do período pertence à IDOMED com a aluna PAMELA SENA NASCIMENTO (R$ 121.914,90)[cite: 12].",
-      analista: "IDOMED mantém 100% de conversão com PIX[cite: 12]. Wyden apresenta 92,6% de conversão[cite: 13] e a Estácio 80,5%[cite: 11].",
-      acao: "Enviar disparos preventivos de lembrete de boleto/PIX via WhatsApp 24h antes do vencimento para garantir a taxa mínima de 60% de efetividade[cite: 11, 12, 13]."
+      metas: "No período de 14/09 a 18/09/2026 foram geradas 616 promessas somando R$ 1.690.968,75 em valor de entrada negociado nas 3 marcas[cite: 22, 23, 24].",
+      ticketAlto: "A maior oportunidade de ticket alto do período pertence à IDOMED com a aluna PAMELA SENA NASCIMENTO (R$ 121.914,90)[cite: 23].",
+      analista: "IDOMED mantém 100% de conversão[cite: 23]. Wyden apresenta 92,6% de conversão[cite: 24] e a Estácio 80,5%[cite: 22].",
+      acao: "Enviar disparos preventivos de lembrete via WhatsApp 24h antes do vencimento para garantir a taxa de efetividade mínima[cite: 22, 23, 24]."
     },
     estacio: {
       sub: "Recuperação de Crédito · Estácio",
+      color: "#00a8e8",
       kpis: [{t:"Acionados",v:"677"}, {t:"Promessas",v:"545"}, {t:"Valor Entrada",v:"R$ 727.621,40"}, {t:"Conversão",v:"80,5%"}],
       unidades: [
         ["TAGUATINGA - DF", "59", "57", "2", "R$ 40.817,03", "R$ 716,09", "96,6%"],
         ["MANAUS-AM", "63", "44", "17", "R$ 40.457,18", "R$ 919,48", "69,8%"],
         ["BELEM - PA", "52", "39", "13", "R$ 44.727,27", "R$ 1.146,85", "75,0%"],
+        ["SAO LUIS - MA", "53", "36", "13", "R$ 56.067,87", "R$ 1.557,44", "67,9%"],
+        ["MACAPA-AP", "37", "32", "4", "R$ 44.636,58", "R$ 1.394,89", "86,5%"],
+        ["ESTAÇÃO - GO", "31", "31", "0", "R$ 40.312,72", "R$ 1.300,41", "100,0%"],
         ["SALVADOR - BA", "30", "30", "0", "R$ 80.679,51", "R$ 2.689,32", "100,0%"],
+        ["ARACAJU - SE", "34", "28", "1", "R$ 28.106,00", "R$ 1.003,79", "82,4%"],
+        ["SANTA CRUZ - RJ", "35", "27", "8", "R$ 16.895,59", "R$ 625,76", "77,1%"],
+        ["FORTALEZA - CE", "41", "26", "5", "R$ 23.501,93", "R$ 903,92", "63,4%"],
+        ["MARACANA - RJ", "29", "25", "1", "R$ 35.510,19", "R$ 1.420,41", "86,2%"],
+        ["R9 TAQUARA - RJ", "29", "25", "4", "R$ 32.612,59", "R$ 1.304,50", "86,2%"],
+        ["NOVA IGUAÇU - RJ", "34", "24", "3", "R$ 42.170,61", "R$ 1.757,11", "70,6%"],
+        ["TERESINA - PI", "21", "21", "0", "R$ 36.638,62", "R$ 1.744,70", "100,0%"],
+        ["ABDIAS DE CARVALHO - PE", "24", "20", "4", "R$ 21.088,73", "R$ 1.054,44", "83,3%"],
+        ["JATIÚCA - AL", "22", "20", "0", "R$ 17.525,28", "R$ 876,26", "90,9%"],
+        ["TOM JOBIM - RJ", "18", "17", "0", "R$ 73.900,25", "R$ 4.347,07", "94,4%"],
+        ["CAMPO GRANDE - RJ", "24", "16", "8", "R$ 16.149,15", "R$ 1.009,32", "66,7%"],
+        ["CABO FRIO - RJ", "18", "12", "2", "R$ 9.564,58", "R$ 797,05", "66,7%"],
+        ["RECREIO - RJ", "13", "8", "4", "R$ 10.968,21", "R$ 1.371,03", "61,5%"],
+        ["NITEROI - RJ", "10", "7", "3", "R$ 15.291,51", "R$ 2.184,50", "70,0%"],
         ["TOTAL", "677", "545", "92", "R$ 727.621,40", "R$ 1.335,09", "80,5%"]
       ],
       colaboradores: [
         ["DAVI HENRIQUE SANTOS SILVA", "88", "R$ 285.369,53", "R$ 171.221,72", "171,2%"],
         ["JOICE MIRANDA OLIVEIRA", "151", "R$ 212.704,71", "R$ 127.622,83", "127,6%"],
-        ["DEBORA TANIA PEREIRA DA SILVA", "59", "R$ 173.487,81", "R$ 104.092,69", "104,1%"]
+        ["DEBORA TANIA PEREIRA DA SILVA", "59", "R$ 173.487,81", "R$ 104.092,69", "104,1%"],
+        ["MARIA DOS REMEDIOS RABELO PEREIRA", "81", "R$ 125.718,05", "R$ 75.430,83", "75,4%"],
+        ["JOAO GUILHERME BELEM CHAVES", "60", "R$ 101.655,09", "R$ 60.993,05", "61,0%"],
+        ["MAIARA SOUZA MARTINS", "61", "R$ 95.410,41", "R$ 57.246,25", "57,2%"],
+        ["LEINA LORENA NOGUEIRA DE OLIVEIRA", "75", "R$ 93.504,59", "R$ 56.102,75", "56,1%"],
+        ["LAYS MILENA RODRIGUES DA SILVA", "81", "R$ 91.953,79", "R$ 55.172,27", "55,2%"],
+        ["EVELLEN DE OLIVEIRA CINTRA DE CASTRO", "53", "R$ 90.821,70", "R$ 54.493,02", "54,5%"],
+        ["FREDERYCO NEIVA TAVEIROS DA SILVA", "70", "R$ 90.412,11", "R$ 54.247,27", "54,2%"],
+        ["MATHEUS DO NASCIMENTO PEREIRA", "63", "R$ 88.739,31", "R$ 53.243,59", "53,2%"],
+        ["HELENA DOS SANTOS MELO", "86", "R$ 88.613,53", "R$ 53.168,12", "53,2%"],
+        ["CAIO MARCELO FAGUNDES", "99", "R$ 82.483,88", "R$ 49.490,33", "49,5%"],
+        ["MARIEL GOULART ANSELMO", "80", "R$ 75.118,58", "R$ 45.071,15", "45,1%"],
+        ["CLAUDIONORA MARIA SIMOES OLIVEIRA", "40", "R$ 71.773,96", "R$ 43.064,38", "43,1%"],
+        ["LAISLA MARIA SANTOS VINHAES", "49", "R$ 71.472,75", "R$ 42.883,65", "42,9%"],
+        ["ANA BEATRIZ DE SOUZA PEREIRA DA SILVA", "55", "R$ 66.692,59", "R$ 40.015,55", "40,0%"],
+        ["THIAGO GABRIEL RODRIGUES DOS SANTOS", "61", "R$ 65.873,77", "R$ 39.524,26", "39,5%"],
+        ["PEDRO FELIPE SOARES PINTO", "85", "R$ 63.332,78", "R$ 37.999,67", "38,0%"],
+        ["ANNY MAYRE VIRGINIO DA SILVA LIMA", "66", "R$ 62.844,55", "R$ 37.706,73", "37,7%"],
+        ["EDUARDA BARRETO FAUSTINO", "66", "R$ 60.270,89", "R$ 36.162,53", "36,2%"],
+        ["GREICE KELLY DE ALBUQUERQUE OLIVEIRA", "64", "R$ 58.185,98", "R$ 34.911,59", "34,9%"],
+        ["JHENIFER GRATIVOL FLORENCIO", "52", "R$ 57.539,34", "R$ 34.523,60", "34,5%"],
+        ["YEDA VITORIA BATISTA DA COSTA", "53", "R$ 52.342,80", "R$ 31.405,68", "31,4%"],
+        ["JULIO CESAR DA SILVA BARTOLETTE", "20", "R$ 20.294,83", "R$ 12.176,90", "12,2%"],
+        ["TOTAL MÊS", "1718", "R$ 2.346.617,33", "R$ 1.407.970,40", "-"]
       ],
-      metas: "Em set/2026 foram geradas 1718 promessas, com valor de entrada de R$ 2.346.617,33[cite: 11]. Espera-se recuperar R$ 1.407.970,40 no mês[cite: 11].",
-      ticketAlto: "MARCELLE FERNANDES MARUJO registrou R$ 18.315,20 com vencimento em 14/09/2026[cite: 11].",
-      analista: "TAGUATINGA - DF apresentou 96,6% de conversão com forma principal em BOLETO[cite: 11].",
-      acao: "Disparar lembrete automático via WhatsApp 24h antes do vencimento[cite: 11]."
+      metas: "Em set/2026 foram geradas 1718 promessas, com valor de entrada de R$ 2.346.617,33[cite: 22]. Espera-se recuperar R$ 1.407.970,40 no mês[cite: 22].",
+      ticketAlto: "MARCELLE FERNANDES MARUJO registrou R$ 18.315,20 com vencimento em 14/09/2026[cite: 22].",
+      analista: "TAGUATINGA - DF apresentou 96,6% de conversão com forma principal em BOLETO[cite: 22].",
+      acao: "Disparar lembrete automático via WhatsApp 24h antes do vencimento[cite: 22]."
     },
     wyden: {
       sub: "Recuperação de Crédito · Wyden",
+      color: "#e60000",
       kpis: [{t:"Acionados",v:"54"}, {t:"Promessas",v:"50"}, {t:"Valor Entrada",v:"R$ 115.718,73"}, {t:"Conversão",v:"92,6%"}],
       unidades: [
-        ["UniFavip Wyden - Caruaru", "39", "37", "2", "R$ 82.780,06", "R$ 2.237,30", "94,9%"],
+        ["UniFavip Wyden - Caruaru", "41", "39", "2", "R$ 93.240,93", "R$ 2.390,79", "95,1%"],
         ["UniFacid Wyden - Teresina", "13", "11", "2", "R$ 22.477,80", "R$ 2.043,44", "84,6%"],
-        ["FACULDADE WYDEN CARUARU", "2", "2", "0", "R$ 10.460,87", "R$ 5.230,44", "100,0%"],
         ["TOTAL", "54", "50", "4", "R$ 115.718,73", "R$ 2.314,37", "92,6%"]
       ],
       colaboradores: [
         ["PAOLLA FERNANDA DE FRANCA GUIMARAES", "110", "R$ 221.163,74", "R$ 132.698,24", "132,7%"],
-        ["PEDRO HENRIQUE PESSOA BARROS", "43", "R$ 67.324,40", "R$ 40.394,64", "40,4%"]
+        ["PEDRO HENRIQUE PESSOA BARROS", "43", "R$ 67.324,40", "R$ 40.394,64", "40,4%"],
+        ["TOTAL MÊS", "153", "R$ 288.488,14", "R$ 173.092,88", "-"]
       ],
-      metas: "Em set/2026 foram geradas 153 promessas na Wyden[cite: 13]. Espera-se recuperar R$ 173.092,88 no mês[cite: 13].",
-      ticketAlto: "ARICIA KERLANNY SILVA RAMOS LEITE registrou R$ 13.910,63 com vencimento em 18/09/2026[cite: 13].",
-      analista: "UniFavip Caruaru liderou com 94,9% de conversão[cite: 13].",
-      acao: "Foco no acompanhamento de cobrança para garantir a meta de R$ 100k[cite: 13]."
+      metas: "Em set/2026 foram geradas 153 promessas na Wyden[cite: 24]. Espera-se recuperar R$ 173.092,88 no mês[cite: 24].",
+      ticketAlto: "ARICIA KERLANNY SILVA RAMOS LEITE registrou R$ 13.910,63 com vencimento em 18/09/2026[cite: 24].",
+      analista: "O volume de promessas atingiu patamar satisfatório, destacando-se a UniFavip Caruaru com 95,1% de conversão[cite: 24].",
+      acao: "Intensificar o acompanhamento nas unidades com maior volume para garantir a conversão efetiva dos valores negociados[cite: 24]."
     },
     idomed: {
       sub: "Recuperação de Crédito · IDOMED",
+      color: "#004d40",
       kpis: [{t:"Acionados",v:"21"}, {t:"Promessas",v:"21"}, {t:"Valor Entrada",v:"R$ 847.628,62"}, {t:"Conversão",v:"100,0%"}],
       unidades: [
         ["Idomed (Cittá - RJ)", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"],
         ["TOTAL", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"]
       ],
       colaboradores: [
-        ["RARIANE NELIZE DO COUTO SOUZA", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"]
+        ["RARIANE NELIZE DO COUTO SOUZA", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"],
+        ["TOTAL SEMANA", "21", "R$ 847.628,62", "R$ 508.577,17", "169,5%"]
       ],
-      metas: "Na semana foram geradas 21 promessas resultando em R$ 847.628,62 negociados[cite: 12].",
-      ticketAlto: "PAMELA SENA NASCIMENTO registrou R$ 121.914,90 de entrada[cite: 12].",
-      analista: "100% de conversão com taxa de recusa zerada (0,0%)[cite: 12].",
-      acao: "Manter acompanhamento próximo para efetivação dos pagamentos de boleto/PIX[cite: 12]."
+      metas: "Na semana foram geradas 21 promessas resultando em R$ 847.628,62 negociados[cite: 23].",
+      ticketAlto: "PAMELA SENA NASCIMENTO registrou R$ 121.914,90 de entrada[cite: 23].",
+      analista: "100% de conversão com taxa de recusa zerada (0,0%)[cite: 23].",
+      acao: "Manter acompanhamento próximo para efetivação dos pagamentos via PIX e boleto[cite: 23]."
     }
   };
 
@@ -296,6 +345,10 @@
 
   function switchBrand(brandKey) {
     currentBrand = brandKey;
+    
+    // Atualiza tema do body para alterar a cor ativa
+    document.body.className = `theme-${brandKey}`;
+
     document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
     event.target.classList.add('active');
     renderData();
@@ -360,7 +413,7 @@
         datasets: [{
           label: 'Promessas',
           data: values,
-          backgroundColor: '#0c2a4d',
+          backgroundColor: d.color,
           borderRadius: 4
         }]
       },
