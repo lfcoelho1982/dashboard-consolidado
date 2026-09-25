@@ -170,7 +170,7 @@
       <div style="overflow-x: auto;">
         <table>
           <thead>
-            <tr><th>Unidade / Marca (Mês Vigente)</th><th>Promessas Acumuladas</th><th>Valor Entrada Negociado</th><th>Efetividade Esperada (60%)</th></tr>
+            <tr><th>Unidade (Mês Vigente)</th><th>Promessas Acumuladas</th><th>Valor Entrada Negociado</th><th>Efetividade Esperada (70%)</th></tr>
           </thead>
           <tbody id="tableAcumulado"></tbody>
         </table>
@@ -208,7 +208,7 @@
     todas: {
       sub: "Recuperação de Crédito · Consolidação Geral",
       color: "#f5a623",
-      kpis: [{t:"Acionados",v:"752"}, {t:"Promessas",v:"616"}, {t:"Valor Entrada",v:"R$ 1.690.968,75"}, {t:"Efetividade Esperada",v:"R$ 1.014.581,25"}],
+      kpis: [{t:"Acionados",v:"752"}, {t:"Promessas",v:"616"}, {t:"Valor Entrada",v:"R$ 1.690.968,75"}, {t:"Efetividade Esperada (70%)",v:"R$ 1.183.678,13"}],
       unidades: [
         ["Estácio (Consolidado)", "677", "545", "92", "R$ 727.621,40", "R$ 1.335,09", "80,5%"],
         ["IDOMED (Consolidado)", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"],
@@ -216,15 +216,36 @@
         ["TOTAL GERAL", "752", "616", "96", "R$ 1.690.968,75", "R$ 2.745,08", "81,9%"]
       ],
       acumulado: [
-        ["Estácio (Acumulado Set/2026)", "1718", "R$ 2.346.617,33", "R$ 1.407.970,40"],
-        ["IDOMED (Acumulado Semanal)", "21", "R$ 847.628,62", "R$ 508.577,17"],
-        ["Wyden (Acumulado Set/2026)", "153", "R$ 288.488,14", "R$ 173.092,88"],
-        ["TOTAL ACUMULADO MÊS", "1892", "R$ 3.482.734,09", "R$ 2.089.640,45"]
+        ["TAGUATINGA - DF (Estácio)", "180", "R$ 128.825,12", "R$ 90.177,58"],
+        ["MANAUS-AM (Estácio)", "139", "R$ 127.688,58", "R$ 89.382,01"],
+        ["BELEM - PA (Estácio)", "123", "R$ 141.134,80", "R$ 98.794,36"],
+        ["SAO LUIS - MA (Estácio)", "114", "R$ 176.920,38", "R$ 123.844,27"],
+        ["MACAPA-AP (Estácio)", "101", "R$ 140.849,85", "R$ 98.594,90"],
+        ["ESTAÇÃO - GO (Estácio)", "98", "R$ 127.228,82", "R$ 89.060,17"],
+        ["SALVADOR - BA (Estácio)", "95", "R$ 254.688,20", "R$ 178.281,74"],
+        ["ARACAJU - SE (Estácio)", "89", "R$ 88.691,80", "R$ 62.084,26"],
+        ["SANTA CRUZ - RJ (Estácio)", "85", "R$ 53.312,18", "R$ 37.318,53"],
+        ["FORTALEZA - CE (Estácio)", "82", "R$ 74.148,82", "R$ 51.904,17"],
+        ["MARACANA - RJ (Estácio)", "79", "R$ 112.115,20", "R$ 78.480,64"],
+        ["R9 TAQUARA - RJ (Estácio)", "79", "R$ 102.910,25", "R$ 72.037,18"],
+        ["NOVA IGUAÇU - RJ (Estácio)", "76", "R$ 133.067,82", "R$ 93.147,47"],
+        ["TERESINA - PI (Estácio)", "66", "R$ 115.606,55", "R$ 80.924,59"],
+        ["ABDIAS DE CARVALHO - PE (Estácio)", "63", "R$ 66.545,30", "R$ 46.581,71"],
+        ["JATIÚCA - AL (Estácio)", "63", "R$ 55.302,40", "R$ 38.711,68"],
+        ["TOM JOBIM - RJ (Estácio)", "54", "R$ 233.189,45", "R$ 163.232,62"],
+        ["CAMPO GRANDE - RJ (Estácio)", "51", "R$ 50.959,18", "R$ 35.671,43"],
+        ["CABO FRIO - RJ (Estácio)", "38", "R$ 30.181,85", "R$ 21.127,30"],
+        ["RECREIO - RJ (Estácio)", "25", "R$ 34.619,55", "R$ 24.233,69"],
+        ["NITEROI - RJ (Estácio)", "22", "R$ 48.281,24", "R$ 33.796,87"],
+        ["UniFavip Wyden - Caruaru", "110", "R$ 221.163,74", "R$ 154.814,62"],
+        ["UniFacid Wyden - Teresina", "43", "R$ 67.324,40", "R$ 47.127,08"],
+        ["Idomed (Cittá - RJ)", "21", "R$ 847.628,62", "R$ 593.340,03"],
+        ["TOTAL ACUMULADO MÊS", "1892", "R$ 3.482.734,09", "R$ 2.437.913,86"]
       ],
       metas: "No período de 14/09 a 18/09/2026 foram geradas 616 promessas somando R$ 1.690.968,75 em valor de entrada negociado nas 3 marcas.",
       ticketAlto: "A maior oportunidade de ticket alto do período pertence à IDOMED (Unidade Cittá - RJ) com a aluna PAMELA SENA NASCIMENTO (R$ 121.914,90).",
       analista: "IDOMED mantém 100% de conversão. Wyden apresenta 92,6% de conversão e a Estácio 80,5%.",
-      acao: "Enviar disparos preventivos de lembrete via WhatsApp 24h antes do vencimento para garantir a taxa de efetividade mínima."
+      action: "Enviar disparos preventivos de lembrete via WhatsApp 24h antes do vencimento para garantir a taxa de efetividade mínima."
     },
     estacio: {
       sub: "Recuperação de Crédito · Estácio",
@@ -255,10 +276,30 @@
         ["TOTAL", "677", "545", "92", "R$ 727.621,40", "R$ 1.335,09", "80,5%"]
       ],
       acumulado: [
-        ["Estácio - Acumulado Geral Mês", "1718", "R$ 2.346.617,33", "R$ 1.407.970,40"],
-        ["TOTAL MÊS ESTÁCIO", "1718", "R$ 2.346.617,33", "R$ 1.407.970,40"]
+        ["TAGUATINGA - DF", "180", "R$ 128.825,12", "R$ 90.177,58"],
+        ["MANAUS-AM", "139", "R$ 127.688,58", "R$ 89.382,01"],
+        ["BELEM - PA", "123", "R$ 141.134,80", "R$ 98.794,36"],
+        ["SAO LUIS - MA", "114", "R$ 176.920,38", "R$ 123.844,27"],
+        ["MACAPA-AP", "101", "R$ 140.849,85", "R$ 98.594,90"],
+        ["ESTAÇÃO - GO", "98", "R$ 127.228,82", "R$ 89.060,17"],
+        ["SALVADOR - BA", "95", "R$ 254.688,20", "R$ 178.281,74"],
+        ["ARACAJU - SE", "89", "R$ 88.691,80", "R$ 62.084,26"],
+        ["SANTA CRUZ - RJ", "85", "R$ 53.312,18", "R$ 37.318,53"],
+        ["FORTALEZA - CE", "82", "R$ 74.148,82", "R$ 51.904,17"],
+        ["MARACANA - RJ", "79", "R$ 112.115,20", "R$ 78.480,64"],
+        ["R9 TAQUARA - RJ", "79", "R$ 102.910,25", "R$ 72.037,18"],
+        ["NOVA IGUAÇU - RJ", "76", "R$ 133.067,82", "R$ 93.147,47"],
+        ["TERESINA - PI", "66", "R$ 115.606,55", "R$ 80.924,59"],
+        ["ABDIAS DE CARVALHO - PE", "63", "R$ 66.545,30", "R$ 46.581,71"],
+        ["JATIÚCA - AL", "63", "R$ 55.302,40", "R$ 38.711,68"],
+        ["TOM JOBIM - RJ", "54", "R$ 233.189,45", "R$ 163.232,62"],
+        ["CAMPO GRANDE - RJ", "51", "R$ 50.959,18", "R$ 35.671,43"],
+        ["CABO FRIO - RJ", "38", "R$ 30.181,85", "R$ 21.127,30"],
+        ["RECREIO - RJ", "25", "R$ 34.619,55", "R$ 24.233,69"],
+        ["NITEROI - RJ", "22", "R$ 48.281,24", "R$ 33.796,87"],
+        ["TOTAL MÊS ESTÁCIO", "1718", "R$ 2.346.617,33", "R$ 1.642.632,13"]
       ],
-      metas: "Em set/2026 foram geradas 1718 promessas, com valor de entrada de R$ 2.346.617,33. Espera-se recuperar R$ 1.407.970,40 no mês.",
+      metas: "Em set/2026 foram geradas 1718 promessas, com valor de entrada de R$ 2.346.617,33. Aplicando a efetividade de 70%, espera-se recuperar R$ 1.642.632,13 no mês.",
       ticketAlto: "A aluna MARCELLE FERNANDES MARUJO (Unidade TOM JOBIM - RJ) registrou R$ 18.315,20 com vencimento em 14/09/2026.",
       analista: "TAGUATINGA - DF apresentou 96,6% de conversão com forma principal em BOLETO.",
       acao: "Disparar lembrete automático via WhatsApp 24h antes do vencimento."
@@ -273,11 +314,11 @@
         ["TOTAL", "54", "50", "4", "R$ 115.718,73", "R$ 2.314,37", "92,6%"]
       ],
       acumulado: [
-        ["UniFavip Wyden - Caruaru", "110", "R$ 221.163,74", "R$ 132.698,24"],
-        ["UniFacid Wyden - Teresina", "43", "R$ 67.324,40", "R$ 40.394,64"],
-        ["TOTAL MÊS WYDEN", "153", "R$ 288.488,14", "R$ 173.092,88"]
+        ["UniFavip Wyden - Caruaru", "110", "R$ 221.163,74", "R$ 154.814,62"],
+        ["UniFacid Wyden - Teresina", "43", "R$ 67.324,40", "R$ 47.127,08"],
+        ["TOTAL MÊS WYDEN", "153", "R$ 288.488,14", "R$ 201.941,70"]
       ],
-      metas: "Em set/2026 foram geradas 153 promessas na Wyden. Espera-se recuperar R$ 173.092,88 no mês.",
+      metas: "Em set/2026 foram geradas 153 promessas na Wyden. Aplicando a efetividade de 70%, espera-se recuperar R$ 201.941,70 no mês.",
       ticketAlto: "A aluna ARICIA KERLANNY SILVA RAMOS LEITE (Unidade UniFavip Wyden - Caruaru) registrou R$ 13.910,63 com vencimento em 18/09/2026.",
       analista: "O volume de promessas atingiu patamar satisfatório, destacando-se a UniFavip Caruaru com 95,1% de conversão.",
       acao: "Intensificar o acompanhamento nas unidades com maior volume para garantir a conversão efetiva dos valores negociados."
@@ -291,8 +332,8 @@
         ["TOTAL", "21", "21", "0", "R$ 847.628,62", "R$ 40.363,27", "100,0%"]
       ],
       acumulado: [
-        ["Idomed (Cittá - RJ)", "21", "R$ 847.628,62", "R$ 508.577,17"],
-        ["TOTAL SEMANA IDOMED", "21", "R$ 847.628,62", "R$ 508.577,17"]
+        ["Idomed (Cittá - RJ)", "21", "R$ 847.628,62", "R$ 593.340,03"],
+        ["TOTAL SEMANA IDOMED", "21", "R$ 847.628,62", "R$ 593.340,03"]
       ],
       metas: "Na semana foram geradas 21 promessas resultando em R$ 847.628,62 negociados.",
       ticketAlto: "A aluna PAMELA SENA NASCIMENTO (Unidade Idomed Cittá - RJ) registrou R$ 121.914,90 de entrada.",
@@ -353,7 +394,7 @@
     document.getElementById('txtMetas').innerText = d.metas;
     document.getElementById('txtTicketAlto').innerText = d.ticketAlto;
     document.getElementById('txtAnalista').innerText = d.analista;
-    document.getElementById('txtAcao').innerText = d.acao;
+    document.getElementById('txtAcao').innerText = d.acao || d.action;
 
     renderChart(d);
   }
